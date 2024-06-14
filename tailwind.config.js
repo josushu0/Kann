@@ -1,5 +1,4 @@
 import animate from 'tailwindcss-animate'
-import forms from '@tailwindcss/forms'
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -90,5 +89,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [animate, forms],
+	plugins: [animate],
 }
