@@ -6,9 +6,7 @@ import { CardContent } from '@/Components/shadcn/ui/card/index.js'
 <template>
 	<div
 		class="flex h-dvh flex-col items-center bg-background pt-6 sm:justify-center sm:pt-0">
-		<div>
-			<slot name="logo" />
-		</div>
+		<slot name="logo" />
 		<Card class="w-full sm:max-w-md">
 			<CardContent class="mt-6">
 				<slot />

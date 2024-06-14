@@ -1,11 +1,11 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3'
-import AuthenticationCard from '@/Components/AuthenticationCard.vue'
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const props = defineProps({
 	email: String,
@@ -29,56 +29,50 @@ const submit = () => {
 <template>
 	<Head title="Reset Password" />
 
-	<AuthenticationCard>
+	<AuthenticationLayout>
 		<template #logo>
-			<AuthenticationCardLogo />
+			<Link
+				:href="route('landing')"
+				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+				<span class="sr-only">Home</span>
+				<ApplicationLogo class="size-16 fill-background stroke-primary" />
+			</Link>
 		</template>
 
-		<form @submit.prevent="submit">
+		<form @submit.prevent="submit" class="space-y-4">
 			<div>
-				<InputLabel for="email" value="Email" />
-				<TextInput
-					id="email"
+				<Label for="email">Email</Label>
+				<Input
 					v-model="form.email"
 					type="email"
-					class="mt-1 block w-full"
-					required
-					autofocus
-					autocomplete="username" />
+					placeholder="Email"
+					id="email" />
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
-			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
-				<TextInput
-					id="password"
+			<div>
+				<Label for="password">Password</Label>
+				<Input
 					v-model="form.password"
 					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="new-password" />
+					placeholder="Password"
+					id="password" />
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
 
-			<div class="mt-4">
-				<InputLabel for="password_confirmation" value="Confirm Password" />
-				<TextInput
-					id="password_confirmation"
+			<div>
+				<Label for="password_confirmation">Confirm Password</Label>
+				<Input
 					v-model="form.password_confirmation"
 					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="new-password" />
+					placeholder="Confirm Password"
+					id="password_confirmation" />
 				<InputError class="mt-2" :message="form.errors.password_confirmation" />
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
-				<PrimaryButton
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Reset Password
-				</PrimaryButton>
+			<div class="flex items-center justify-end">
+				<Button :disabled="form.processing">Reset Password</Button>
 			</div>
 		</form>
-	</AuthenticationCard>
+	</AuthenticationLayout>
 </template>

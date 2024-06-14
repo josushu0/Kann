@@ -1,12 +1,13 @@
 <script setup>
 import { nextTick, ref } from 'vue'
-import { Head, useForm } from '@inertiajs/vue3'
-import AuthenticationCard from '@/Components/AuthenticationCard.vue'
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import { CardDescription } from '@/Components/shadcn/ui/card/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const recovery = ref(false)
 
@@ -40,12 +41,17 @@ const submit = () => {
 <template>
 	<Head title="Two-factor Confirmation" />
 
-	<AuthenticationCard>
+	<AuthenticationLayout>
 		<template #logo>
-			<AuthenticationCardLogo />
+			<Link
+				:href="route('landing')"
+				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+				<span class="sr-only">Home</span>
+				<ApplicationLogo class="size-16 fill-background stroke-primary" />
+			</Link>
 		</template>
 
-		<div class="mb-4 text-sm text-gray-600">
+		<CardDescription class="my-4">
 			<template v-if="!recovery">
 				Please confirm access to your account by entering the authentication
 				code provided by your authenticator application.
@@ -55,52 +61,34 @@ const submit = () => {
 				Please confirm access to your account by entering one of your emergency
 				recovery codes.
 			</template>
-		</div>
+		</CardDescription>
 
-		<form @submit.prevent="submit">
+		<form @submit.prevent="submit" class="space-y-4">
 			<div v-if="!recovery">
-				<InputLabel for="code" value="Code" />
-				<TextInput
-					id="code"
-					ref="codeInput"
-					v-model="form.code"
-					type="text"
-					inputmode="numeric"
-					class="mt-1 block w-full"
-					autofocus
-					autocomplete="one-time-code" />
+				<Label for="code">Code</Label>
+				<Input v-model="form.code" type="text" placeholder="Code" id="code" />
 				<InputError class="mt-2" :message="form.errors.code" />
 			</div>
 
 			<div v-else>
-				<InputLabel for="recovery_code" value="Recovery Code" />
-				<TextInput
-					id="recovery_code"
-					ref="recoveryCodeInput"
+				<Label for="recovery_code">Recovery Code</Label>
+				<Input
 					v-model="form.recovery_code"
 					type="text"
-					class="mt-1 block w-full"
-					autocomplete="one-time-code" />
+					placeholder="Recovery Code"
+					id="recovery_code" />
 				<InputError class="mt-2" :message="form.errors.recovery_code" />
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
-				<button
-					type="button"
-					class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-					@click.prevent="toggleRecovery">
+			<div class="flex items-center justify-end">
+				<Button variant="link" type="button" @click.prevent="toggleRecovery">
 					<template v-if="!recovery"> Use a recovery code</template>
 
 					<template v-else> Use an authentication code</template>
-				</button>
+				</Button>
 
-				<PrimaryButton
-					class="ms-4"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Log in
-				</PrimaryButton>
+				<Button :disabled="form.processing">Log in</Button>
 			</div>
 		</form>
-	</AuthenticationCard>
+	</AuthenticationLayout>
 </template>

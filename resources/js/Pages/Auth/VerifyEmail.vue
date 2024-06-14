@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
-import AuthenticationCard from '@/Components/AuthenticationCard.vue'
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import { CardDescription } from '@/Components/shadcn/ui/card/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const props = defineProps({
 	status: String,
@@ -23,48 +24,42 @@ const verificationLinkSent = computed(
 <template>
 	<Head title="Email Verification" />
 
-	<AuthenticationCard>
+	<AuthenticationLayout>
 		<template #logo>
-			<AuthenticationCardLogo />
+			<Link
+				:href="route('landing')"
+				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+				<span class="sr-only">Home</span>
+				<ApplicationLogo class="size-16 fill-background stroke-primary" />
+			</Link>
 		</template>
 
-		<div class="mb-4 text-sm text-gray-600">
-			Before continuing, could you verify your email address by clicking on the
-			link we just emailed to you? If you didn't receive the email, we will
-			gladly send you another.
-		</div>
-
-		<div
-			v-if="verificationLinkSent"
-			class="mb-4 font-medium text-sm text-green-600">
-			A new verification link has been sent to the email address you provided in
-			your profile settings.
-		</div>
+		<CardDescription class="space-y-4">
+			<p>
+				Before continuing, could you verify your email address by clicking on
+				the link we just emailed to you? If you didn't receive the email, we
+				will gladly send you another.
+			</p>
+			<p v-if="verificationLinkSent">
+				A new verification link has been sent to the email address you provided
+				in your profile settings.
+			</p>
+		</CardDescription>
 
 		<form @submit.prevent="submit">
 			<div class="mt-4 flex items-center justify-between">
-				<PrimaryButton
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Resend Verification Email
-				</PrimaryButton>
+				<Button :disabled="form.processing">Resend Verification Email</Button>
 
 				<div>
-					<Link
-						:href="route('profile.show')"
-						class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-						Edit Profile
-					</Link>
+					<Button variant="link" as-child>
+						<Link :href="route('profile.show')"> Edit Profile</Link>
+					</Button>
 
-					<Link
-						:href="route('logout')"
-						method="post"
-						as="button"
-						class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ms-2">
-						Log Out
-					</Link>
+					<Button variant="link" as-child>
+						<Link :href="route('logout')" method="post"> Log Out </Link>
+					</Button>
 				</div>
 			</div>
 		</form>
-	</AuthenticationCard>
+	</AuthenticationLayout>
 </template>

@@ -36,8 +36,11 @@ const submit = () => {
 
 	<AuthenticationLayout>
 		<template #logo>
-			<Link :href="route('landing')">
-				<ApplicationLogo class="mb-5 size-16 fill-background stroke-primary" />
+			<Link
+				:href="route('landing')"
+				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+				<span class="sr-only">Home</span>
+				<ApplicationLogo class="size-16 fill-background stroke-primary" />
 			</Link>
 		</template>
 
@@ -76,7 +79,7 @@ const submit = () => {
 				<Label for="remember">Remember me</Label>
 			</div>
 
-			<div class="mt-4 flex items-center justify-end">
+			<div class="flex items-center justify-end">
 				<Button v-if="canResetPassword" variant="link" as-child>
 					<Link :href="route('register')">Don't have an account?</Link>
 				</Button>

@@ -27,19 +27,22 @@ const submit = () => {
 
 	<AuthenticationLayout>
 		<template #logo>
-			<Link :href="route('landing')">
-				<ApplicationLogo class="mb-5 size-16 fill-background stroke-primary" />
+			<Link
+				:href="route('landing')"
+				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+				<span class="sr-only">Home</span>
+				<ApplicationLogo class="size-16 fill-background stroke-primary" />
 			</Link>
 		</template>
 
-		<form @submit.prevent="submit">
+		<form @submit.prevent="submit" class="space-y-4">
 			<div>
 				<Label for="Name">Name</Label>
 				<Input v-model="form.name" type="text" placeholder="Name" id="name" />
 				<InputError class="mt-2" :message="form.errors.name" />
 			</div>
 
-			<div class="mt-4">
+			<div>
 				<Label for="email">Email</Label>
 				<Input
 					v-model="form.email"
@@ -49,7 +52,7 @@ const submit = () => {
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
-			<div class="mt-4">
+			<div>
 				<Label for="password">Password</Label>
 				<Input
 					v-model="form.password"
@@ -59,7 +62,7 @@ const submit = () => {
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
 
-			<div class="mt-4">
+			<div>
 				<Label for="password_confirmation">Confirm Password</Label>
 				<Input
 					v-model="form.password_confirmation"
@@ -102,7 +105,7 @@ const submit = () => {
 			<!--				</InputLabel>-->
 			<!--			</div>-->
 
-			<div class="mt-4 flex items-center justify-end">
+			<div class="flex items-center justify-end">
 				<Button variant="link" as-child>
 					<Link :href="route('login')">Already registered?</Link>
 				</Button>
