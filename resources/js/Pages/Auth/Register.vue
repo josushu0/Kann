@@ -1,12 +1,11 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3'
-import AuthenticationCard from '@/Components/AuthenticationCard.vue'
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
-import Checkbox from '@/Components/Checkbox.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
 
 const form = useForm({
 	name: '',
@@ -26,107 +25,90 @@ const submit = () => {
 <template>
 	<Head title="Register" />
 
-	<AuthenticationCard>
+	<AuthenticationLayout>
 		<template #logo>
-			<AuthenticationCardLogo />
+			<Link :href="route('landing')">
+				<ApplicationLogo class="mb-5 size-16 fill-background stroke-primary" />
+			</Link>
 		</template>
 
 		<form @submit.prevent="submit">
 			<div>
-				<InputLabel for="name" value="Name" />
-				<TextInput
-					id="name"
-					v-model="form.name"
-					type="text"
-					class="mt-1 block w-full"
-					required
-					autofocus
-					autocomplete="name" />
+				<Label for="Name">Name</Label>
+				<Input v-model="form.name" type="text" placeholder="Name" id="name" />
 				<InputError class="mt-2" :message="form.errors.name" />
 			</div>
 
 			<div class="mt-4">
-				<InputLabel for="email" value="Email" />
-				<TextInput
-					id="email"
+				<Label for="email">Email</Label>
+				<Input
 					v-model="form.email"
 					type="email"
-					class="mt-1 block w-full"
-					required
-					autocomplete="username" />
+					placeholder="Email"
+					id="email" />
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
 			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
-				<TextInput
-					id="password"
+				<Label for="password">Password</Label>
+				<Input
 					v-model="form.password"
 					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="new-password" />
+					placeholder="Password"
+					id="password" />
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
 
 			<div class="mt-4">
-				<InputLabel for="password_confirmation" value="Confirm Password" />
-				<TextInput
-					id="password_confirmation"
+				<Label for="password_confirmation">Confirm Password</Label>
+				<Input
 					v-model="form.password_confirmation"
 					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="new-password" />
+					placeholder="Confirm Password"
+					id="password_confirmation" />
 				<InputError class="mt-2" :message="form.errors.password_confirmation" />
 			</div>
 
-			<div
-				v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature"
-				class="mt-4">
-				<InputLabel for="terms">
-					<div class="flex items-center">
-						<Checkbox
-							id="terms"
-							v-model:checked="form.terms"
-							name="terms"
-							required />
+			<!--      Terms of service-->
+			<!--			<div-->
+			<!--				v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature"-->
+			<!--				class="mt-4">-->
+			<!--				<InputLabel for="terms">-->
+			<!--					<div class="flex items-center">-->
+			<!--						<Checkbox-->
+			<!--							id="terms"-->
+			<!--							v-model:checked="form.terms"-->
+			<!--							name="terms"-->
+			<!--							required />-->
 
-						<div class="ms-2">
-							I agree to the
-							<a
-								target="_blank"
-								:href="route('terms.show')"
-								class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-								>Terms of Service</a
-							>
-							and
-							<a
-								target="_blank"
-								:href="route('policy.show')"
-								class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-								>Privacy Policy</a
-							>
-						</div>
-					</div>
-					<InputError class="mt-2" :message="form.errors.terms" />
-				</InputLabel>
-			</div>
+			<!--						<div class="ms-2">-->
+			<!--							I agree to the-->
+			<!--							<a-->
+			<!--								target="_blank"-->
+			<!--								:href="route('terms.show')"-->
+			<!--								class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"-->
+			<!--								>Terms of Service</a-->
+			<!--							>-->
+			<!--							and-->
+			<!--							<a-->
+			<!--								target="_blank"-->
+			<!--								:href="route('policy.show')"-->
+			<!--								class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"-->
+			<!--								>Privacy Policy</a-->
+			<!--							>-->
+			<!--						</div>-->
+			<!--					</div>-->
+			<!--					<InputError class="mt-2" :message="form.errors.terms" />-->
+			<!--				</InputLabel>-->
+			<!--			</div>-->
 
-			<div class="flex items-center justify-end mt-4">
-				<Link
-					:href="route('login')"
-					class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-					Already registered?
-				</Link>
+			<div class="mt-4 flex items-center justify-end">
+				<Button variant="link" as-child>
+					<Link :href="route('login')">Already registered?</Link>
+				</Button>
 
-				<PrimaryButton
-					class="ms-4"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Register
-				</PrimaryButton>
+				<Button :disabled="form.processing">Register</Button>
 			</div>
 		</form>
-	</AuthenticationCard>
+	</AuthenticationLayout>
 </template>

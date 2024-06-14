@@ -1,12 +1,12 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3'
-import AuthenticationCard from '@/Components/AuthenticationCard.vue'
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
-import Checkbox from '@/Components/Checkbox.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
+import { Checkbox } from '@/Components/shadcn/ui/checkbox/index.js'
 
 defineProps({
 	canResetPassword: Boolean,
@@ -34,63 +34,55 @@ const submit = () => {
 <template>
 	<Head title="Log in" />
 
-	<AuthenticationCard>
+	<AuthenticationLayout>
 		<template #logo>
-			<AuthenticationCardLogo />
+			<Link :href="route('landing')">
+				<ApplicationLogo class="mb-5 size-16 fill-background stroke-primary" />
+			</Link>
 		</template>
 
-		<div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+		<div v-if="status" class="mb-4 text-sm font-medium text-foreground">
 			{{ status }}
 		</div>
 
-		<form @submit.prevent="submit">
+		<form @submit.prevent="submit" class="space-y-4">
 			<div>
-				<InputLabel for="email" value="Email" />
-				<TextInput
-					id="email"
-					v-model="form.email"
+				<Label for="email">Email</Label>
+				<Input
 					type="email"
-					class="mt-1 block w-full"
-					required
-					autofocus
-					autocomplete="username" />
+					placeholder="Email"
+					id="email"
+					v-model="form.email" />
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
-			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
-				<TextInput
-					id="password"
-					v-model="form.password"
+			<div>
+				<div class="flex items-center justify-between">
+					<Label for="password">Password</Label>
+					<Button v-if="canResetPassword" variant="link" as-child>
+						<Link :href="route('password.request')">Forgot your password?</Link>
+					</Button>
+				</div>
+				<Input
 					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="current-password" />
+					placeholder="Password"
+					id="password"
+					v-model="form.password" />
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
 
-			<div class="block mt-4">
-				<label class="flex items-center">
-					<Checkbox v-model:checked="form.remember" name="remember" />
-					<span class="ms-2 text-sm text-gray-600">Remember me</span>
-				</label>
+			<div class="flex items-center gap-2">
+				<Checkbox v-model:checked="form.remember" id="remember" />
+				<Label for="remember">Remember me</Label>
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
-				<Link
-					v-if="canResetPassword"
-					:href="route('password.request')"
-					class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-					Forgot your password?
-				</Link>
+			<div class="mt-4 flex items-center justify-end">
+				<Button v-if="canResetPassword" variant="link" as-child>
+					<Link :href="route('register')">Don't have an account?</Link>
+				</Button>
 
-				<PrimaryButton
-					class="ms-4"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Log in
-				</PrimaryButton>
+				<Button type="submit" :disabled="form.processing">Login</Button>
 			</div>
 		</form>
-	</AuthenticationCard>
+	</AuthenticationLayout>
 </template>
