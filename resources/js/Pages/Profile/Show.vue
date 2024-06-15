@@ -16,14 +16,15 @@ defineProps({
 
 <template>
 	<AppLayout title="Profile">
-		<div class="container">
+		<div class="container flex flex-col gap-6">
 			<div v-if="$page.props.jetstream.canUpdateProfileInformation">
 				<UpdateProfileInformationForm :user="$page.props.auth.user" />
-				<Separator class="my-6" />
 			</div>
 
+			<Separator />
+
 			<div v-if="$page.props.jetstream.canUpdatePassword">
-				<UpdatePasswordForm class="mt-10 sm:mt-0" />
+				<UpdatePasswordForm />
 
 				<SectionBorder />
 			</div>

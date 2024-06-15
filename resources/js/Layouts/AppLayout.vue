@@ -19,7 +19,7 @@ defineProps({
 
 		<div class="h-dvh bg-background">
 			<!-- Page navbar -->
-			<header class="sticky top-0">
+			<header class="sticky top-0 z-50">
 				<nav
 					class="flex items-center justify-between border-b border-border bg-background px-6 py-3">
 					<div class="flex items-center justify-between gap-2">
@@ -40,7 +40,7 @@ defineProps({
 			</header>
 
 			<!-- Page Content -->
-			<main class="min-h-full py-10">
+			<main class="py-10">
 				<slot />
 			</main>
 		</div>

@@ -1,15 +1,10 @@
 <script setup>
-import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
-import ActionMessage from '@/Components/ActionMessage.vue'
-import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
-
-const passwordInput = ref(null)
-const currentPasswordInput = ref(null)
+import { Card, CardContent } from '@/Components/shadcn/ui/card/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const form = useForm({
 	current_password: '',
@@ -25,12 +20,10 @@ const updatePassword = () => {
 		onError: () => {
 			if (form.errors.password) {
 				form.reset('password', 'password_confirmation')
-				passwordInput.value.focus()
 			}
 
 			if (form.errors.current_password) {
 				form.reset('current_password')
-				currentPasswordInput.value.focus()
 			}
 		},
 	})
@@ -38,60 +31,60 @@ const updatePassword = () => {
 </script>
 
 <template>
-	<FormSection @submitted="updatePassword">
-		<template #title> Update Password</template>
+	<form @submit.prevent="updatePassword" class="grid gap-4 md:grid-cols-3">
+		<div>
+			<h2 class="font-bold">Update Password</h2>
+			<p class="text-sm">
+				Ensure your account is using a long, random password to stay secure.
+			</p>
+		</div>
 
-		<template #description>
-			Ensure your account is using a long, random password to stay secure.
-		</template>
+		<Card class="col-span-2">
+			<CardContent class="mt-6 space-y-4">
+				<div>
+					<Label for="current_password">Current Password</Label>
+					<Input
+						type="password"
+						id="current_password"
+						name="current_password"
+						v-model="form.current_password" />
+					<InputError :message="form.errors.current_password" class="mt-2" />
+				</div>
+				<div>
+					<Label for="password">New Password</Label>
+					<Input
+						type="password"
+						id="password"
+						name="password"
+						v-model="form.password" />
+					<InputError :message="form.errors.password" class="mt-2" />
+				</div>
+				<div>
+					<Label for="password_confirmation">Confirm Password</Label>
+					<Input
+						type="password"
+						id="password_confirmation"
+						name="password_confirmation"
+						v-model="form.password_confirmation" />
+					<InputError
+						:message="form.errors.password_confirmation"
+						class="mt-2" />
+				</div>
 
-		<template #form>
-			<div class="col-span-6 sm:col-span-4">
-				<InputLabel for="current_password" value="Current Password" />
-				<TextInput
-					id="current_password"
-					ref="currentPasswordInput"
-					v-model="form.current_password"
-					type="password"
-					class="mt-1 block w-full"
-					autocomplete="current-password" />
-				<InputError :message="form.errors.current_password" class="mt-2" />
-			</div>
-
-			<div class="col-span-6 sm:col-span-4">
-				<InputLabel for="password" value="New Password" />
-				<TextInput
-					id="password"
-					ref="passwordInput"
-					v-model="form.password"
-					type="password"
-					class="mt-1 block w-full"
-					autocomplete="new-password" />
-				<InputError :message="form.errors.password" class="mt-2" />
-			</div>
-
-			<div class="col-span-6 sm:col-span-4">
-				<InputLabel for="password_confirmation" value="Confirm Password" />
-				<TextInput
-					id="password_confirmation"
-					v-model="form.password_confirmation"
-					type="password"
-					class="mt-1 block w-full"
-					autocomplete="new-password" />
-				<InputError :message="form.errors.password_confirmation" class="mt-2" />
-			</div>
-		</template>
-
-		<template #actions>
-			<ActionMessage :on="form.recentlySuccessful" class="me-3">
-				Saved.
-			</ActionMessage>
-
-			<PrimaryButton
-				:class="{ 'opacity-25': form.processing }"
-				:disabled="form.processing">
-				Save
-			</PrimaryButton>
-		</template>
-	</FormSection>
+				<div class="flex items-center justify-end gap-2">
+					<transition
+						leave-active-class="transition ease-in duration-1000"
+						leave-from-class="opacity-100"
+						leave-to-class="opacity-0">
+						<span
+							v-show="form.recentlySuccessful"
+							class="text-sm text-gray-600">
+							Saved.
+						</span>
+					</transition>
+					<Button type="submit" :disabled="form.processing">Save</Button>
+				</div>
+			</CardContent>
+		</Card>
+	</form>
 </template>

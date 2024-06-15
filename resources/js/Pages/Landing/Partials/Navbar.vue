@@ -26,6 +26,7 @@ defineProps({
 				<ApplicationLogo class="size-9 fill-background stroke-primary" />
 			</Link>
 			<div class="flex items-center gap-2">
+				<ThemeSelector />
 				<div class="hidden items-center gap-2 md:flex" v-if="canLogin">
 					<Button as-child v-if="$page.props.auth.user">
 						<Link :href="route('projects.show')">Dashboard</Link>
@@ -39,7 +40,6 @@ defineProps({
 						</Button>
 					</template>
 				</div>
-				<ThemeSelector />
 				<Sheet>
 					<SheetTrigger as-child class="md:hidden">
 						<Button variant="outline" size="icon">
