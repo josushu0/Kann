@@ -26,6 +26,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $email = fake()->unique()->email;
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -34,7 +36,7 @@ class UserFactory extends Factory
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
-            'profile_photo_path' => null,
+            'profile_photo_path' => 'https://www.gravatar.com/avatar/'.hash('sha256', $email).'?s=200&d=retro',
             'current_team_id' => null,
         ];
     }

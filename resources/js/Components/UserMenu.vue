@@ -24,7 +24,7 @@ const logout = () => {
 	<DropdownMenu>
 		<DropdownMenuTrigger as-child>
 			<Button variant="ghost" size="icon" class="rounded-full">
-				<Avatar>
+				<Avatar class="size-8">
 					<AvatarImage :src="src" alt="" />
 				</Avatar>
 			</Button>
@@ -36,9 +36,9 @@ const logout = () => {
 			</DropdownMenuItem>
 			<DropdownMenuSeparator />
 			<form @submit.prevent="logout">
-				<DropdownMenuItem as="button" type="submit" class="w-full"
-					>Logout</DropdownMenuItem
-				>
+				<DropdownMenuItem as="button" type="submit" class="w-full">
+					Logout
+				</DropdownMenuItem>
 			</form>
 		</DropdownMenuContent>
 	</DropdownMenu>

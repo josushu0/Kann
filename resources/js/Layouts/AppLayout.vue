@@ -19,9 +19,9 @@ defineProps({
 
 		<div class="h-dvh bg-background">
 			<!-- Page navbar -->
-			<header>
+			<header class="sticky top-0">
 				<nav
-					class="flex items-center justify-between border-b border-border px-6 py-3">
+					class="flex items-center justify-between border-b border-border bg-background px-6 py-3">
 					<div class="flex items-center justify-between gap-2">
 						<Link
 							:href="route('projects.show')"
@@ -34,13 +34,13 @@ defineProps({
 					<div class="flex items-center justify-between gap-2">
 						<TeamSelector />
 						<ThemeSelector />
-						<UserMenu :src="$page.props.auth.user.name" />
+						<UserMenu :src="$page.props.auth.user.profile_photo_path" />
 					</div>
 				</nav>
 			</header>
 
 			<!-- Page Content -->
-			<main>
+			<main class="min-h-full py-10">
 				<slot />
 			</main>
 		</div>
