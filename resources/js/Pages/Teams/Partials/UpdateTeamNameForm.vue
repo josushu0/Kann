@@ -1,11 +1,11 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3'
-import ActionMessage from '@/Components/ActionMessage.vue'
-import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import { Card, CardContent } from '@/Components/shadcn/ui/card/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Avatar, AvatarImage } from '@/Components/shadcn/ui/avatar/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const props = defineProps({
 	team: Object,
@@ -25,56 +25,57 @@ const updateTeamName = () => {
 </script>
 
 <template>
-	<FormSection @submitted="updateTeamName">
-		<template #title> Team Name</template>
+	<form @submit.prevent="updateTeamName" class="grid gap-4 md:grid-cols-3">
+		<div>
+			<h2 class="font-bold">Team Name</h2>
+			<p class="text-sm">The team's name and owner information.</p>
+		</div>
 
-		<template #description> The team's name and owner information.</template>
-
-		<template #form>
-			<!-- Team Owner Information -->
-			<div class="col-span-6">
-				<InputLabel value="Team Owner" />
-
-				<div class="flex items-center mt-2">
-					<img
-						class="w-12 h-12 rounded-full object-cover"
-						:src="team.owner.profile_photo_url"
-						:alt="team.owner.name" />
-
-					<div class="ms-4 leading-tight">
-						<div class="text-gray-900">{{ team.owner.name }}</div>
-						<div class="text-gray-700 text-sm">
-							{{ team.owner.email }}
+		<Card class="col-span-2">
+			<CardContent class="mt-6 space-y-4">
+				<!-- Team Owner Information -->
+				<div class="space-y-2">
+					<Label>Team Owner</Label>
+					<div class="flex items-center gap-2">
+						<Avatar>
+							<AvatarImage :src="team.owner.profile_photo_path" alt="" />
+						</Avatar>
+						<div>
+							<p>{{ team.owner.name }}</p>
+							<p class="text-sm">{{ team.owner.email }}</p>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<!-- Team Name -->
-			<div class="col-span-6 sm:col-span-4">
-				<InputLabel for="name" value="Team Name" />
+				<!-- Team Name -->
+				<div>
+					<Label for="name">Team Name</Label>
+					<Input
+						type="text"
+						id="name"
+						name="name"
+						v-model="form.name"
+						:disabled="!permissions.canUpdateTeam" />
+					<InputError :message="form.errors.name" class="mt-2" />
+				</div>
 
-				<TextInput
-					id="name"
-					v-model="form.name"
-					type="text"
-					class="mt-1 block w-full"
-					:disabled="!permissions.canUpdateTeam" />
-
-				<InputError :message="form.errors.name" class="mt-2" />
-			</div>
-		</template>
-
-		<template v-if="permissions.canUpdateTeam" #actions>
-			<ActionMessage :on="form.recentlySuccessful" class="me-3">
-				Saved.
-			</ActionMessage>
-
-			<PrimaryButton
-				:class="{ 'opacity-25': form.processing }"
-				:disabled="form.processing">
-				Save
-			</PrimaryButton>
-		</template>
-	</FormSection>
+				<!-- Actions -->
+				<div
+					v-if="permissions.canUpdateTeam"
+					class="flex items-center justify-end gap-2">
+					<transition
+						leave-active-class="transition ease-in duration-1000"
+						leave-from-class="opacity-100"
+						leave-to-class="opacity-0">
+						<span
+							v-show="form.recentlySuccessful"
+							class="text-sm text-gray-600">
+							Saved.
+						</span>
+					</transition>
+					<Button type="submit" :disabled="form.processing">Save</Button>
+				</div>
+			</CardContent>
+		</Card>
+	</form>
 </template>
