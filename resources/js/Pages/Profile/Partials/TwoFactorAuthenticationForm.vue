@@ -117,13 +117,13 @@ const disableTwoFactorAuthentication = () => {
 
 		<Card class="col-span-2">
 			<CardContent class="mt-6 space-y-4">
-				<CardTitle v-if="twoFactorEnabled && !confirming" class="text-lg">
+				<CardTitle v-if="twoFactorEnabled && !confirming" class="text-base">
 					You have enabled two factor authentication.
 				</CardTitle>
-				<CardTitle v-else-if="twoFactorEnabled && confirming" class="text-lg">
+				<CardTitle v-else-if="twoFactorEnabled && confirming" class="text-base">
 					Finish enabling two factor authentication.
 				</CardTitle>
-				<CardTitle v-else class="text-lg">
+				<CardTitle v-else class="text-base">
 					You have not enabled two factor authentication.
 				</CardTitle>
 				<CardDescription>

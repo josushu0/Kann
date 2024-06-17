@@ -16,22 +16,19 @@ defineProps({
 <template>
 	<AppLayout title="Profile">
 		<div class="container flex flex-col gap-6">
-			<div v-if="$page.props.jetstream.canUpdateProfileInformation">
-				<UpdateProfileInformationForm :user="$page.props.auth.user" />
-			</div>
+			<UpdateProfileInformationForm
+				v-if="$page.props.jetstream.canUpdateProfileInformation"
+				:user="$page.props.auth.user" />
 
 			<Separator />
 
-			<div v-if="$page.props.jetstream.canUpdatePassword">
-				<UpdatePasswordForm />
-			</div>
+			<UpdatePasswordForm v-if="$page.props.jetstream.canUpdatePassword" />
 
 			<Separator />
 
-			<div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
-				<TwoFactorAuthenticationForm
-					:requires-confirmation="confirmsTwoFactorAuthentication" />
-			</div>
+			<TwoFactorAuthenticationForm
+				v-if="$page.props.jetstream.canManageTwoFactorAuthentication"
+				:requires-confirmation="confirmsTwoFactorAuthentication" />
 
 			<Separator />
 
@@ -39,9 +36,7 @@ defineProps({
 
 			<Separator />
 
-			<template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
-				<DeleteUserForm class="mt-10 sm:mt-0" />
-			</template>
+			<DeleteUserForm v-if="$page.props.jetstream.hasAccountDeletionFeatures" />
 		</div>
 	</AppLayout>
 </template>
