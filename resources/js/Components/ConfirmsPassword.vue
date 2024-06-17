@@ -1,10 +1,17 @@
 <script setup>
 import { nextTick, reactive, ref } from 'vue'
-import DialogModal from './DialogModal.vue'
 import InputError from './InputError.vue'
-import PrimaryButton from './PrimaryButton.vue'
-import SecondaryButton from './SecondaryButton.vue'
-import TextInput from './TextInput.vue'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/Components/shadcn/ui/dialog/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const emit = defineEmits(['confirmed'])
 
@@ -21,9 +28,14 @@ defineProps({
 		type: String,
 		default: 'Confirm',
 	},
+	variant: {
+		type: String,
+		default: 'primary',
+	},
+	trigger: {
+		type: String,
+	},
 })
-
-const confirmingPassword = ref(false)
 
 const form = reactive({
 	password: '',
@@ -31,16 +43,14 @@ const form = reactive({
 	processing: false,
 })
 
-const passwordInput = ref(null)
+const openModal = ref(false)
 
 const startConfirmingPassword = () => {
 	axios.get(route('password.confirmation')).then((response) => {
 		if (response.data.confirmed) {
 			emit('confirmed')
 		} else {
-			confirmingPassword.value = true
-
-			setTimeout(() => passwordInput.value.focus(), 250)
+			openModal.value = true
 		}
 	})
 }
@@ -54,63 +64,42 @@ const confirmPassword = () => {
 		})
 		.then(() => {
 			form.processing = false
-
-			closeModal()
 			nextTick().then(() => emit('confirmed'))
 		})
 		.catch((error) => {
 			form.processing = false
 			form.error = error.response.data.errors.password[0]
-			passwordInput.value.focus()
 		})
-}
-
-const closeModal = () => {
-	confirmingPassword.value = false
-	form.password = ''
-	form.error = ''
 }
 </script>
 
 <template>
-	<span>
-		<span @click="startConfirmingPassword">
-			<slot />
-		</span>
-
-		<DialogModal :show="confirmingPassword" @close="closeModal">
-			<template #title>
-				{{ title }}
-			</template>
-
-			<template #content>
-				{{ content }}
-
-				<div class="mt-4">
-					<TextInput
-						ref="passwordInput"
-						v-model="form.password"
-						type="password"
-						class="mt-1 block w-3/4"
-						placeholder="Password"
-						autocomplete="current-password"
-						@keyup.enter="confirmPassword" />
-
-					<InputError :message="form.error" class="mt-2" />
-				</div>
-			</template>
-
-			<template #footer>
-				<SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-				<PrimaryButton
-					class="ms-3"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing"
-					@click="confirmPassword">
-					{{ button }}
-				</PrimaryButton>
-			</template>
-		</DialogModal>
+	<span @click="startConfirmingPassword">
+		<slot />
 	</span>
+	<Dialog :open="openModal">
+		<DialogContent>
+			<DialogHeader>
+				<DialogTitle>{{ title }}</DialogTitle>
+				<DialogDescription>{{ content }}</DialogDescription>
+			</DialogHeader>
+			<div>
+				<Label for="password" class="sr-only">Password</Label>
+				<Input
+					type="password"
+					placeholder="Password"
+					v-model="form.password"
+					@keyup.enter="confirmPassword" />
+				<InputError :message="form.error" class="mt-2" />
+			</div>
+			<div class="flex justify-end gap-2">
+				<DialogClose as-child>
+					<Button variant="outline">Cancel</Button>
+				</DialogClose>
+				<Button :disabled="form.processing" @click="confirmPassword">
+					{{ button }}
+				</Button>
+			</div>
+		</DialogContent>
+	</Dialog>
 </template>

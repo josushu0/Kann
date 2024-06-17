@@ -25,17 +25,16 @@ defineProps({
 
 			<div v-if="$page.props.jetstream.canUpdatePassword">
 				<UpdatePasswordForm />
-
-				<SectionBorder />
 			</div>
+
+			<Separator />
 
 			<div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
 				<TwoFactorAuthenticationForm
-					:requires-confirmation="confirmsTwoFactorAuthentication"
-					class="mt-10 sm:mt-0" />
-
-				<SectionBorder />
+					:requires-confirmation="confirmsTwoFactorAuthentication" />
 			</div>
+
+			<Separator />
 
 			<LogoutOtherBrowserSessionsForm
 				:sessions="sessions"
