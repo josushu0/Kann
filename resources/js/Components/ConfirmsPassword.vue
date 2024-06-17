@@ -3,7 +3,6 @@ import { nextTick, reactive, ref } from 'vue'
 import InputError from './InputError.vue'
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
@@ -15,7 +14,7 @@ import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const emit = defineEmits(['confirmed'])
 
-defineProps({
+const props = defineProps({
 	title: {
 		type: String,
 		default: 'Confirm Password',
@@ -28,12 +27,9 @@ defineProps({
 		type: String,
 		default: 'Confirm',
 	},
-	variant: {
-		type: String,
-		default: 'primary',
-	},
-	trigger: {
-		type: String,
+	alwaysAsk: {
+		type: Boolean,
+		default: false,
 	},
 })
 
@@ -46,13 +42,17 @@ const form = reactive({
 const openModal = ref(false)
 
 const startConfirmingPassword = () => {
-	axios.get(route('password.confirmation')).then((response) => {
-		if (response.data.confirmed) {
-			emit('confirmed')
-		} else {
-			openModal.value = true
-		}
-	})
+	if (props.alwaysAsk) {
+		openModal.value = true
+	} else {
+		axios.get(route('password.confirmation')).then((response) => {
+			if (response.data.confirmed) {
+				emit('confirmed')
+			} else {
+				openModal.value = true
+			}
+		})
+	}
 }
 
 const confirmPassword = () => {
@@ -64,7 +64,8 @@ const confirmPassword = () => {
 		})
 		.then(() => {
 			form.processing = false
-			nextTick().then(() => emit('confirmed'))
+			nextTick().then(() => emit('confirmed', form.password))
+			openModal.value = false
 		})
 		.catch((error) => {
 			form.processing = false
@@ -78,7 +79,9 @@ const confirmPassword = () => {
 		<slot />
 	</span>
 	<Dialog :open="openModal">
-		<DialogContent>
+		<DialogContent
+			@escape-key-down="() => (openModal = false)"
+			@pointer-down-outside="() => (openModal = false)">
 			<DialogHeader>
 				<DialogTitle>{{ title }}</DialogTitle>
 				<DialogDescription>{{ content }}</DialogDescription>
@@ -93,9 +96,9 @@ const confirmPassword = () => {
 				<InputError :message="form.error" class="mt-2" />
 			</div>
 			<div class="flex justify-end gap-2">
-				<DialogClose as-child>
-					<Button variant="outline">Cancel</Button>
-				</DialogClose>
+				<Button variant="outline" @click="() => (openModal = false)">
+					Cancel
+				</Button>
 				<Button :disabled="form.processing" @click="confirmPassword">
 					{{ button }}
 				</Button>
