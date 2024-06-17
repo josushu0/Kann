@@ -33,7 +33,7 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
-                'profile_photo_path' => 'https://www.gravatar.com/avatar/'.hash('sha256', $input['email']).'?s=200&d=retro',
+                'profile_photo_path' => sprintf('https://www.gravatar.com/avatar/%s?s=200&d=retro', hash('sha256', $input['email'])),
             ]), function (User $user) {
                 $this->createTeam($user);
             });
