@@ -180,7 +180,7 @@ const disableTwoFactorAuthentication = () => {
 					</div>
 				</div>
 
-				<div>
+				<div class="flex items-center justify-end">
 					<ConfirmsPassword
 						v-if="!twoFactorEnabled"
 						@confirmed="enableTwoFactorAuthentication">
