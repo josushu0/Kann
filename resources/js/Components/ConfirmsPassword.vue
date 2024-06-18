@@ -3,10 +3,12 @@ import { nextTick, reactive, ref } from 'vue'
 import InputError from './InputError.vue'
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from '@/Components/shadcn/ui/dialog/index.js'
 import { Label } from '@/Components/shadcn/ui/label/index.js'
 import { Input } from '@/Components/shadcn/ui/input/index.js'
@@ -42,14 +44,10 @@ const form = reactive({
 const openModal = ref(false)
 
 const startConfirmingPassword = () => {
-	if (props.alwaysAsk) {
-		openModal.value = true
-	} else {
+	if (!props.alwaysAsk) {
 		axios.get(route('password.confirmation')).then((response) => {
 			if (response.data.confirmed) {
 				emit('confirmed')
-			} else {
-				openModal.value = true
 			}
 		})
 	}
@@ -65,23 +63,22 @@ const confirmPassword = () => {
 		.then(() => {
 			form.processing = false
 			nextTick().then(() => emit('confirmed', form.password))
-			openModal.value = false
 		})
 		.catch((error) => {
 			form.processing = false
 			form.error = error.response.data.errors.password[0]
 		})
+
+	openModal.value = false
 }
 </script>
 
 <template>
-	<span @click="startConfirmingPassword">
-		<slot />
-	</span>
-	<Dialog :open="openModal">
-		<DialogContent
-			@escape-key-down="() => (openModal = false)"
-			@pointer-down-outside="() => (openModal = false)">
+	<Dialog v-model:open="openModal">
+		<DialogTrigger as-child @click="startConfirmingPassword">
+			<slot />
+		</DialogTrigger>
+		<DialogContent>
 			<DialogHeader>
 				<DialogTitle>{{ title }}</DialogTitle>
 				<DialogDescription>{{ content }}</DialogDescription>
@@ -96,9 +93,9 @@ const confirmPassword = () => {
 				<InputError :message="form.error" class="mt-2" />
 			</div>
 			<div class="flex justify-end gap-2">
-				<Button variant="outline" @click="() => (openModal = false)">
-					Cancel
-				</Button>
+				<DialogClose as-child>
+					<Button variant="outline"> Cancel</Button>
+				</DialogClose>
 				<Button :disabled="form.processing" @click="confirmPassword">
 					{{ button }}
 				</Button>
