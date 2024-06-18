@@ -1,18 +1,26 @@
 <script setup>
 import { ref } from 'vue'
 import { router, useForm, usePage } from '@inertiajs/vue3'
-import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import ConfirmationModal from '@/Components/ConfirmationModal.vue'
 import DangerButton from '@/Components/DangerButton.vue'
 import DialogModal from '@/Components/DialogModal.vue'
-import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import SectionBorder from '@/Components/SectionBorder.vue'
-import TextInput from '@/Components/TextInput.vue'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+} from '@/Components/shadcn/ui/card/index.js'
+import { Label } from '@/Components/shadcn/ui/label/index.js'
+import { Input } from '@/Components/shadcn/ui/input/index.js'
+import {
+	ToggleGroup,
+	ToggleGroupItem,
+} from '@/Components/shadcn/ui/toggle-group/index.js'
+import { Button } from '@/Components/shadcn/ui/button/index.js'
 
 const props = defineProps({
 	team: Object,
@@ -101,117 +109,88 @@ const displayableRole = (role) => {
 </script>
 
 <template>
-	<div>
-		<div v-if="userPermissions.canAddTeamMembers">
-			<SectionBorder />
-
-			<!-- Add Team Member -->
-			<FormSection @submitted="addTeamMember">
-				<template #title> Add Team Member</template>
-
-				<template #description>
+	<!-- Add Members Section -->
+	<div v-if="userPermissions.canAddTeamMembers">
+		<form @submit.prevent="addTeamMember" class="grid gap-4 md:grid-cols-3">
+			<div>
+				<h2 class="font-bold">Add Team Member</h2>
+				<p class="text-sm">
 					Add a new team member to your team, allowing them to collaborate with
 					you.
-				</template>
+				</p>
+			</div>
 
-				<template #form>
-					<div class="col-span-6">
-						<div class="max-w-xl text-sm text-gray-600">
-							Please provide the email address of the person you would like to
-							add to this team.
-						</div>
-					</div>
+			<Card class="col-span-2">
+				<CardContent class="mt-6 space-y-4">
+					<CardDescription
+						>Please provide the email address of the person you would like to
+						add to this team.
+					</CardDescription>
 
 					<!-- Member Email -->
-					<div class="col-span-6 sm:col-span-4">
-						<InputLabel for="email" value="Email" />
-						<TextInput
-							id="email"
-							v-model="addTeamMemberForm.email"
+					<div>
+						<Label for="email">Email</Label>
+						<Input
 							type="email"
-							class="mt-1 block w-full" />
+							id="email"
+							name="email"
+							v-model="addTeamMemberForm.email" />
 						<InputError
 							:message="addTeamMemberForm.errors.email"
 							class="mt-2" />
 					</div>
 
-					<!-- Role -->
-					<div
-						v-if="availableRoles.length > 0"
-						class="col-span-6 lg:col-span-4">
-						<InputLabel for="roles" value="Role" />
+					<!-- Roles -->
+					<div v-if="availableRoles.length > 0">
+						<Label for="role">Role</Label>
 						<InputError :message="addTeamMemberForm.errors.role" class="mt-2" />
-
-						<div
-							class="relative z-0 mt-1 border border-gray-200 rounded-lg cursor-pointer">
-							<button
-								v-for="(role, i) in availableRoles"
-								:key="role.key"
-								type="button"
-								class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+						<ToggleGroup
+							type="single"
+							:model-value="addTeamMemberForm.role"
+							@update:model-value="
+								(val) => {
+									if (val) addTeamMemberForm.role = val
+								}
+							"
+							class="flex flex-col items-start gap-0">
+							<ToggleGroupItem
+								v-for="(role, index) in availableRoles"
+								:key="index"
+								:value="role.key"
+								class="flex h-fit w-full flex-col items-start gap-1 border border-border p-2"
 								:class="{
-									'border-t border-gray-200 focus:border-none rounded-t-none':
-										i > 0,
-									'rounded-b-none': i != Object.keys(availableRoles).length - 1,
-								}"
-								@click="addTeamMemberForm.role = role.key">
-								<div
-									:class="{
-										'opacity-50':
-											addTeamMemberForm.role &&
-											addTeamMemberForm.role != role.key,
-									}">
-									<!-- Role Name -->
-									<div class="flex items-center">
-										<div
-											class="text-sm text-gray-600"
-											:class="{
-												'font-semibold': addTeamMemberForm.role == role.key,
-											}">
-											{{ role.name }}
-										</div>
-
-										<svg
-											v-if="addTeamMemberForm.role == role.key"
-											class="ms-2 h-5 w-5 text-green-400"
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke-width="1.5"
-											stroke="currentColor">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-										</svg>
-									</div>
-
-									<!-- Role Description -->
-									<div class="mt-2 text-xs text-gray-600 text-start">
-										{{ role.description }}
-									</div>
-								</div>
-							</button>
-						</div>
+									'rounded-t-none': index > 0,
+									'rounded-b-none':
+										index != Object.keys(availableRoles).length - 1,
+								}">
+								<p class="font-bold">{{ role.name }}</p>
+								<p>{{ role.description }}</p>
+							</ToggleGroupItem>
+						</ToggleGroup>
 					</div>
-				</template>
 
-				<template #actions>
-					<ActionMessage
-						:on="addTeamMemberForm.recentlySuccessful"
-						class="me-3">
-						Added.
-					</ActionMessage>
-
-					<PrimaryButton
-						:class="{ 'opacity-25': addTeamMemberForm.processing }"
-						:disabled="addTeamMemberForm.processing">
-						Add
-					</PrimaryButton>
-				</template>
-			</FormSection>
-		</div>
-
+					<!-- Actions -->
+					<div class="flex items-center justify-end gap-2">
+						<transition
+							leave-active-class="transition ease-in duration-1000"
+							leave-from-class="opacity-100"
+							leave-to-class="opacity-0">
+							<span
+								v-show="addTeamMemberForm.recentlySuccessful"
+								class="text-sm text-gray-600">
+								Added.
+							</span>
+						</transition>
+						<Button type="submit" :disabled="addTeamMemberForm.processing"
+							>Add
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		</form>
+	</div>
+	<div></div>
+	<div>
 		<div
 			v-if="
 				team.team_invitations.length > 0 && userPermissions.canAddTeamMembers
@@ -243,7 +222,7 @@ const displayableRole = (role) => {
 								<!-- Cancel Team Invitation -->
 								<button
 									v-if="userPermissions.canRemoveTeamMembers"
-									class="cursor-pointer ms-6 text-sm text-red-500 focus:outline-none"
+									class="ms-6 cursor-pointer text-sm text-red-500 focus:outline-none"
 									@click="cancelTeamInvitation(invitation)">
 									Cancel
 								</button>
@@ -274,7 +253,7 @@ const displayableRole = (role) => {
 							class="flex items-center justify-between">
 							<div class="flex items-center">
 								<img
-									class="w-8 h-8 rounded-full object-cover"
+									class="h-8 w-8 rounded-full object-cover"
 									:src="user.profile_photo_url"
 									:alt="user.name" />
 								<div class="ms-4">
@@ -303,7 +282,7 @@ const displayableRole = (role) => {
 								<!-- Leave Team -->
 								<button
 									v-if="$page.props.auth.user.id === user.id"
-									class="cursor-pointer ms-6 text-sm text-red-500"
+									class="ms-6 cursor-pointer text-sm text-red-500"
 									@click="confirmLeavingTeam">
 									Leave
 								</button>
@@ -311,7 +290,7 @@ const displayableRole = (role) => {
 								<!-- Remove Team Member -->
 								<button
 									v-else-if="userPermissions.canRemoveTeamMembers"
-									class="cursor-pointer ms-6 text-sm text-red-500"
+									class="ms-6 cursor-pointer text-sm text-red-500"
 									@click="confirmTeamMemberRemoval(user)">
 									Remove
 								</button>
@@ -331,14 +310,14 @@ const displayableRole = (role) => {
 			<template #content>
 				<div v-if="managingRoleFor">
 					<div
-						class="relative z-0 mt-1 border border-gray-200 rounded-lg cursor-pointer">
+						class="relative z-0 mt-1 cursor-pointer rounded-lg border border-gray-200">
 						<button
 							v-for="(role, i) in availableRoles"
 							:key="role.key"
 							type="button"
-							class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+							class="relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
 							:class="{
-								'border-t border-gray-200 focus:border-none rounded-t-none':
+								'rounded-t-none border-t border-gray-200 focus:border-none':
 									i > 0,
 								'rounded-b-none': i !== Object.keys(availableRoles).length - 1,
 							}"
