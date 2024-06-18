@@ -26,8 +26,13 @@ defineProps({
 						:user-permissions="permissions" />
 				</template>
 
-				<template v-if="permissions.canDeleteTeam && !team.personal_team">
-					<SectionBorder />
+				<template
+					v-if="
+						team.team_invitations.length > 0 && permissions.canAddTeamMembers
+					">
+					<Separator />
+					<TeamInvitations :team="team" :user-permissions="permissions" />
+				</template>
 
 					<DeleteTeamForm class="mt-10 sm:mt-0" :team="team" />
 				</template>
