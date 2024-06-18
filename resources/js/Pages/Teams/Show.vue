@@ -16,39 +16,37 @@ defineProps({
 
 <template>
 	<AppLayout title="Team Settings">
-		<div>
-			<div class="container flex flex-col gap-6">
-				<UpdateTeamNameForm :team="team" :permissions="permissions" />
+		<div class="container flex flex-col gap-6">
+			<UpdateTeamNameForm :team="team" :permissions="permissions" />
 
-				<template v-if="permissions.canAddTeamMembers">
-					<Separator />
-					<AddTeamMember
-						:team="team"
-						:available-roles="availableRoles"
-						:user-permissions="permissions" />
-				</template>
+			<template v-if="permissions.canAddTeamMembers">
+				<Separator />
+				<AddTeamMember
+					:team="team"
+					:available-roles="availableRoles"
+					:user-permissions="permissions" />
+			</template>
 
-				<template
-					v-if="
-						team.team_invitations.length > 0 && permissions.canAddTeamMembers
-					">
-					<Separator />
-					<TeamInvitations :team="team" :user-permissions="permissions" />
-				</template>
+			<template
+				v-if="
+					team.team_invitations.length > 0 && permissions.canAddTeamMembers
+				">
+				<Separator />
+				<TeamInvitations :team="team" :user-permissions="permissions" />
+			</template>
 
-				<template v-if="team.users.length > 0">
-					<Separator />
-					<ManageTeamMembers
-						:team="team"
-						:user-permissions="permissions"
-						:availableRoles="availableRoles" />
-				</template>
+			<template v-if="team.users.length > 0">
+				<Separator />
+				<ManageTeamMembers
+					:team="team"
+					:user-permissions="permissions"
+					:availableRoles="availableRoles" />
+			</template>
 
-				<template v-if="permissions.canDeleteTeam && !team.personal_team">
-					<Separator />
-					<DeleteTeamForm :team="team" />
-				</template>
-			</div>
+			<template v-if="permissions.canDeleteTeam && !team.personal_team">
+				<Separator />
+				<DeleteTeamForm :team="team" />
+			</template>
 		</div>
 	</AppLayout>
 </template>
