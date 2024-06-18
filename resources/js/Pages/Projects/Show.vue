@@ -6,6 +6,13 @@ import { Input } from '@/Components/shadcn/ui/input/index.js'
 import { Button } from '@/Components/shadcn/ui/button/index.js'
 import { Icon } from '@iconify/vue'
 import { ref, watch } from 'vue'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '@/Components/shadcn/ui/card/index.js'
 
 const props = defineProps({
 	projects: {
@@ -43,11 +50,29 @@ watch(search, (value) => {
 					Create Project
 				</Button>
 			</div>
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+			<div
+				v-if="projects.length > 0"
+				class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
 				<ProjectCard
 					v-for="project in filteredProjects"
 					:key="project.id"
 					:project="project" />
+			</div>
+			<div v-else>
+				<Card>
+					<CardHeader class="items-center">
+						<CardTitle>No Projects</CardTitle>
+						<CardDescription
+							>Get started by creating a new project.
+						</CardDescription>
+					</CardHeader>
+					<CardContent class="flex justify-center">
+						<Button class="flex items-center gap-1">
+							<Icon icon="lucide:plus" class="size-5" />
+							Create Project
+						</Button>
+					</CardContent>
+				</Card>
 			</div>
 		</div>
 	</AppLayout>
