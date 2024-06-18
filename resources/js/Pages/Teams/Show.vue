@@ -4,6 +4,8 @@ import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm.vue'
 import { Separator } from '@/Components/shadcn/ui/separator/index.js'
 import AddTeamMember from '@/Pages/Teams/Partials/AddTeamMember.vue'
+import TeamInvitations from '@/Pages/Teams/Partials/TeamInvitations.vue'
+import ManageTeamMembers from '@/Pages/Teams/Partials/ManageTeamMembers.vue'
 
 defineProps({
 	team: Object,
@@ -34,13 +36,17 @@ defineProps({
 					<TeamInvitations :team="team" :user-permissions="permissions" />
 				</template>
 
-					<DeleteTeamForm class="mt-10 sm:mt-0" :team="team" />
 				<template v-if="team.users.length > 0">
 					<Separator />
 					<ManageTeamMembers
 						:team="team"
 						:user-permissions="permissions"
 						:availableRoles="availableRoles" />
+				</template>
+
+				<template v-if="permissions.canDeleteTeam && !team.personal_team">
+					<Separator />
+					<DeleteTeamForm :team="team" />
 				</template>
 			</div>
 		</div>
