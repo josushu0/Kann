@@ -1,9 +1,9 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
-import SectionBorder from '@/Components/SectionBorder.vue'
-import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager.vue'
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm.vue'
+import { Separator } from '@/Components/shadcn/ui/separator/index.js'
+import AddTeamMember from '@/Pages/Teams/Partials/AddTeamMember.vue'
 
 defineProps({
 	team: Object,
@@ -18,11 +18,13 @@ defineProps({
 			<div class="container flex flex-col gap-6">
 				<UpdateTeamNameForm :team="team" :permissions="permissions" />
 
-				<TeamMemberManager
-					class="mt-10 sm:mt-0"
-					:team="team"
-					:available-roles="availableRoles"
-					:user-permissions="permissions" />
+				<template v-if="permissions.canAddTeamMembers">
+					<Separator />
+					<AddTeamMember
+						:team="team"
+						:available-roles="availableRoles"
+						:user-permissions="permissions" />
+				</template>
 
 				<template v-if="permissions.canDeleteTeam && !team.personal_team">
 					<SectionBorder />
