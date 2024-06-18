@@ -35,6 +35,12 @@ defineProps({
 				</template>
 
 					<DeleteTeamForm class="mt-10 sm:mt-0" :team="team" />
+				<template v-if="team.users.length > 0">
+					<Separator />
+					<ManageTeamMembers
+						:team="team"
+						:user-permissions="permissions"
+						:availableRoles="availableRoles" />
 				</template>
 			</div>
 		</div>
