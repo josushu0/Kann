@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,5 +23,10 @@ class TeamFactory extends Factory
             'user_id' => User::factory(),
             'personal_team' => true,
         ];
+    }
+
+    public function withProjects(?callable $callback = null): static
+    {
+        return $this->has(Project::factory(5)->when(is_callable($callback), $callback), 'projects');
     }
 }

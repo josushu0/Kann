@@ -62,6 +62,7 @@ class UserFactory extends Factory
 
         return $this->has(
             Team::factory()
+                ->withProjects()
                 ->state(fn (array $attributes, User $user) => [
                     'name' => $user->name.'\'s Team',
                     'user_id' => $user->id,
