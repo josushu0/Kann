@@ -20,7 +20,7 @@ class ProjectController extends Controller
 
         return Inertia::render('Projects/List', [
             'projects' => $team->projects,
-            'canCreateProject' => $request->user()->hasTeamPermission($team, 'create'),
+            'canCreateProject' => Gate::allows('create', Project::class),
         ]);
     }
 
