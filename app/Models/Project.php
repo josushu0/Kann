@@ -11,6 +11,8 @@ class Project extends Model
 {
     use HasFactory, HasUlids;
 
+    protected $fillable = ['name', 'description', 'start_date', 'end_date'];
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);

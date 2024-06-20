@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,9 +12,7 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Projects/Show', [
-            'projects' => auth()->user()->currentTeam->projects,
-        ]);
-    })->name('projects.show');
+    Route::get('/dashboard', [ProjectController::class, 'index'])->name('projects.index');
+
+    Route::resource('projects', ProjectController::class)->except('index');
 });

@@ -24,7 +24,7 @@ defineProps({
 					class="flex items-center justify-between border-b border-border bg-background px-6 py-3">
 					<div class="flex items-center justify-between gap-2">
 						<Link
-							:href="route('projects.show')"
+							:href="route('projects.index')"
 							class="rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
 							<span class="sr-only">Home</span>
 							<ApplicationLogo class="size-9 fill-background stroke-primary" />

@@ -3,5 +3,5 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 </script>
 
 <template>
-	<AppLayout title="Project"></AppLayout>
+	<AppLayout title="Settings"></AppLayout>
 </template>
