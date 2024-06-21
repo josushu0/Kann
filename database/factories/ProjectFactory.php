@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Column;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,5 +23,20 @@ class ProjectFactory extends Factory
             'start_date' => now(),
             'end_date' => $this->faker->dateTimeBetween('now', '+1 years'),
         ];
+    }
+
+    public function withDefaultColumns(?callable $callback = null): static
+    {
+        return $this->has(
+            Column::factory()
+                ->count(3)
+                ->sequence(
+                    ['name' => 'To do', 'position' => 60000],
+                    ['name' => 'Doing', 'position' => 120000],
+                    ['name' => 'Done', 'position' => 200000],
+                )
+                ->when(is_callable($callback), $callback),
+            'columns',
+        );
     }
 }

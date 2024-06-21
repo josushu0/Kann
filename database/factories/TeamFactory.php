@@ -27,6 +27,10 @@ class TeamFactory extends Factory
 
     public function withProjects(?callable $callback = null): static
     {
-        return $this->has(Project::factory(5)->when(is_callable($callback), $callback), 'projects');
+        return $this->has(
+            Project::factory(5)
+                ->withDefaultColumns()
+                ->when(is_callable($callback), $callback),
+            'projects');
     }
 }
