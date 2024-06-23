@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@formkit/drag-and-drop':
+        specifier: ^0.1.4
+        version: 0.1.4
       '@internationalized/date':
         specifier: ^3.5.4
         version: 3.5.4
@@ -246,6 +249,9 @@ packages:
 
   '@floating-ui/vue@1.0.6':
     resolution: {integrity: sha512-EdrOljjkpkkqZnrpqUcPoz9NvHxuTjUtSInh6GMv3+Mcy+giY2cE2pHh9rpacRcZ2eMSCxel9jWkWXTjLmY55w==}
+
+  '@formkit/drag-and-drop@0.1.4':
+    resolution: {integrity: sha512-2/T0XC8UsDU7dNZ+dPEWP8tuOVpmzlA8JiXqxJ5SewAOSlh34fpcVuJPBP9Vy680jF/nbnc7QkBMoCJUHRbsKA==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1260,6 +1266,8 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@formkit/drag-and-drop@0.1.4': {}
 
   '@iconify/types@2.0.0': {}
 

@@ -16,7 +16,7 @@ class Column extends Model
 
     const float POSITION_GAP = 60000;
 
-    const float MIN_GAP = 30000;
+    const float MIN_GAP = 1;
 
     public static function booted()
     {

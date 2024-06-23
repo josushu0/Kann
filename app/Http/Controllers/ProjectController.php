@@ -51,7 +51,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         return Inertia::render('Projects/Kanban', [
-            'name' => $project->name,
+            'project' => $project,
             'data' => $project->columns()->orderBy('position')->get(),
         ]);
     }

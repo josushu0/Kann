@@ -21,6 +21,7 @@
     "vue": "^3.3.13"
   },
   "dependencies": {
+    "@formkit/drag-and-drop": "^0.1.4",
     "@internationalized/date": "^3.5.4",
     "@vueuse/core": "^10.11.0",
     "class-variance-authority": "^0.7.0",
