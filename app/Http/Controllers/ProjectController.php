@@ -39,6 +39,8 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Project::class);
+
         $validated = $request->validated();
         $request->user()->currentTeam->projects()->create($validated);
 
@@ -50,6 +52,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        Gate::authorize('view', $project);
+
         return Inertia::render('Projects/Kanban', [
             'project' => $project,
             'data' => $project->columns()->orderBy('position')->get(),
@@ -61,7 +65,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return Inertia::render('Projects/Settings');
+        Gate::authorize('view', $project);
+
+        return Inertia::render('Projects/Settings', [
+            'canUpdateProject' => Gate::allows('update', $project),
+        ]);
     }
 
     /**
