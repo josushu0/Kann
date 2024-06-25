@@ -17,9 +17,9 @@ defineProps({
 
 		<Banner />
 
-		<div class="h-dvh bg-background">
+		<div class="flex h-dvh flex-col bg-background">
 			<!-- Page navbar -->
-			<header class="sticky top-0 z-50">
+			<header>
 				<nav
 					class="flex items-center justify-between border-b border-border bg-background px-6 py-3">
 					<div class="flex items-center justify-between gap-2">
@@ -40,7 +40,7 @@ defineProps({
 			</header>
 
 			<!-- Page Content -->
-			<main class="py-10">
+			<main class="h-full overflow-auto py-6">
 				<slot />
 			</main>
 		</div>

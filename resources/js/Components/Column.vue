@@ -1,17 +1,6 @@
 <script setup>
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-} from '@/Components/shadcn/ui/card/index.js'
+import { Card, CardHeader } from '@/Components/shadcn/ui/card/index.js'
 import { router, useForm } from '@inertiajs/vue3'
-import {
-	EditableArea,
-	EditableInput,
-	EditablePreview,
-	EditableRoot,
-} from 'radix-vue'
-import InputError from '@/Components/InputError.vue'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -20,23 +9,25 @@ import {
 } from '@/Components/shadcn/ui/dropdown-menu/index.js'
 import { Button } from '@/Components/shadcn/ui/button/index.js'
 import { Icon } from '@iconify/vue'
+import {
+	EditableArea,
+	EditableInput,
+	EditablePreview,
+	EditableRoot,
+} from 'radix-vue'
 
 const props = defineProps({
 	column: Object,
 })
-const emits = defineEmits(['toggleEditing'])
-
-const toggleEditing = () => {
-	console.log('editing')
-	emits('toggleEditing')
-}
 
 const form = useForm({
 	name: props.column.name,
 })
 
-const updateName = (value) => {
-	form.put(route('columns.update', props.column.id))
+const updateName = () => {
+	form.put(route('columns.update', props.column.id), {
+		onError: () => (form.name = props.column.name),
+	})
 }
 
 const deleteColumn = () => {
@@ -48,38 +39,38 @@ const deleteColumn = () => {
 </script>
 
 <template>
-	<Card class="flex w-72 select-none flex-col gap-2">
-		<CardHeader>
-			<CardTitle class="flex items-center justify-between gap-2 text-lg">
-				<EditableRoot
-					:model-value="form.name"
-					submit-mode="both"
-					select-on-focus
-					@update:model-value="(value) => (form.name = value)"
-					@submit="(value) => updateName(value)">
-					<EditableArea>
-						<EditablePreview as="div" />
-						<EditableInput
-							class="w-full rounded-md border border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-						<InputError :message="form.errors.name" class="mt-2" />
-					</EditableArea>
-				</EditableRoot>
-				<DropdownMenu>
-					<DropdownMenuTrigger as-child>
-						<Button variant="ghost" size="icon" class="shrink-0">
-							<Icon icon="lucide:ellipsis-vertical" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent>
-						<DropdownMenuItem
-							class="flex items-center gap-2"
-							@click="deleteColumn">
-							<Icon icon="lucide:trash" class="text-red-600" />
-							Delete column
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</CardTitle>
+	<Card class="h-fit w-72">
+		<CardHeader class="flex h-full flex-row items-start p-4">
+			<div class="column_drag_handle flex-none cursor-grab p-3">
+				<Icon icon="lucide:grip-vertical" />
+			</div>
+			<EditableRoot
+				submit-mode="enter"
+				v-model="form.name"
+				select-on-focus
+				@submit="updateName"
+				class="flex-1 overflow-hidden break-words">
+				<EditableArea>
+					<EditablePreview as="h3" class="px-3 py-2 font-semibold" />
+					<EditableInput
+						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
+				</EditableArea>
+			</EditableRoot>
+			<DropdownMenu>
+				<DropdownMenuTrigger as-child>
+					<Button variant="ghost" size="icon" class="flex-none">
+						<Icon icon="lucide:ellipsis-vertical" class="size-4" />
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem
+						class="flex items-center gap-2"
+						@click="deleteColumn">
+						<Icon icon="lucide:trash" class="text-red-600" />
+						Delete column
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 		</CardHeader>
 	</Card>
 </template>
