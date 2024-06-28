@@ -68,6 +68,7 @@ class ProjectController extends Controller
         Gate::authorize('view', $project);
 
         return Inertia::render('Projects/Settings', [
+            'project' => $project,
             'canUpdateProject' => Gate::allows('update', $project),
         ]);
     }
@@ -75,9 +76,14 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(StoreProjectRequest $request, Project $project)
     {
-        //
+        Gate::authorize('update', $project);
+
+        $validated = $request->validated();
+        $project->update($validated);
+
+        return to_route('projects.show', $project->id);
     }
 
     /**

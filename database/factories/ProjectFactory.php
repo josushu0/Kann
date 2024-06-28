@@ -20,8 +20,8 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'description' => $this->faker->text(),
-            'start_date' => now(),
-            'end_date' => $this->faker->dateTimeBetween('now', '+1 years'),
+            'start_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
         ];
     }
 
