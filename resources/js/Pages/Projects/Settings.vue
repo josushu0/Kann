@@ -57,7 +57,7 @@ const updateProject = () => {
 </script>
 
 <template>
-	<AppLayout title="Settings">
+	<AppLayout :title="project.name" :project="project.id">
 		<Card
 			class="mx-auto w-full max-w-3xl border-0 shadow-none md:border md:shadow-sm">
 			<CardHeader>

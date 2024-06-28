@@ -48,7 +48,7 @@ useDraggable(draggable, columns.value, {
 </script>
 
 <template>
-	<AppLayout :title="project.name">
+	<AppLayout :title="project.name" :project="project.id">
 		<div class="flex h-full gap-2 px-10">
 			<!-- Columns -->
 			<div ref="draggable" class="flex h-full gap-2">

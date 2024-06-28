@@ -8,6 +8,10 @@ import UserMenu from '@/Components/UserMenu.vue'
 
 defineProps({
 	title: String,
+	project: {
+		type: String,
+		default: false,
+	},
 })
 </script>
 
@@ -21,7 +25,8 @@ defineProps({
 			<!-- Page navbar -->
 			<header>
 				<nav
-					class="flex items-center justify-between border-b border-border bg-background px-6 py-3">
+					class="flex items-center justify-between bg-background px-6 py-3"
+					:class="{ 'border-b border-border': !project }">
 					<div class="flex items-center justify-between gap-2">
 						<Link
 							:href="route('projects.index')"
@@ -37,6 +42,27 @@ defineProps({
 						<UserMenu :src="$page.props.auth.user.profile_photo_path" />
 					</div>
 				</nav>
+				<div
+					v-if="project"
+					class="flex border-b border-border bg-background px-6">
+					<Link
+						:href="route('projects.show', project)"
+						class="px-3 pb-2"
+						:class="{
+							'border-b border-primary': $page.component === 'Projects/Kanban',
+						}">
+						Tasks
+					</Link>
+					<Link
+						:href="route('projects.edit', project)"
+						class="px-3 pb-2"
+						:class="{
+							'border-b border-primary':
+								$page.component === 'Projects/Settings',
+						}">
+						Settings
+					</Link>
+				</div>
 			</header>
 
 			<!-- Page Content -->
