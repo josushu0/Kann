@@ -124,7 +124,7 @@ const createProject = () => {
 							class="mt-2" />
 					</div>
 					<div class="flex justify-end gap-2">
-						<Button variant="outline">
+						<Button variant="outline" type="button">
 							<Link :href="route('projects.index')">Cancel</Link>
 						</Button>
 						<Button type="submit" :disabled="form.processing">Create</Button>

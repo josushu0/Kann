@@ -94,7 +94,7 @@ const confirmPassword = () => {
 			</div>
 			<div class="flex justify-end gap-2">
 				<DialogClose as-child>
-					<Button variant="outline"> Cancel</Button>
+					<Button variant="outline">Cancel</Button>
 				</DialogClose>
 				<Button :disabled="form.processing" @click="confirmPassword">
 					{{ button }}

@@ -91,6 +91,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        Gate::authorize('delete', $project);
+        $project->delete();
+
+        return to_route('projects.index');
     }
 }
