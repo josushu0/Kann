@@ -15,6 +15,7 @@ import {
 	EditablePreview,
 	EditableRoot,
 } from 'radix-vue'
+import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
 
 const props = defineProps({
 	column: Object,
@@ -63,11 +64,21 @@ const deleteColumn = () => {
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
-					<DropdownMenuItem
-						class="flex items-center gap-2"
-						@click="deleteColumn">
-						<Icon icon="lucide:trash" class="text-red-600" />
-						Delete column
+					<DropdownMenuItem as-child>
+						<ConfirmActionModal
+							title="Delete column?"
+							description="Are you sure you want to delete this column?"
+							:button="{
+								text: 'Delete',
+								variant: 'destructive',
+								disabled: form.processing,
+							}"
+							@confirm="deleteColumn">
+							<Button variant="ghost" class="gap-2">
+								<Icon icon="lucide:trash" class="text-red-600" />
+								Delete column
+							</Button>
+						</ConfirmActionModal>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

@@ -19,6 +19,7 @@ import {
 import { Label } from '@/Components/shadcn/ui/label/index.js'
 import InputError from '@/Components/InputError.vue'
 import { ref } from 'vue'
+import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
 
 const props = defineProps({
 	team: Object,
@@ -37,7 +38,7 @@ const updateRole = (member) => {
 	})
 }
 
-const openLeave = ref(false)
+const page = usePage()
 const leaveTeamForm = useForm({})
 const leaveTeam = () => {
 	leaveTeamForm.delete(
@@ -49,8 +50,6 @@ const leaveTeam = () => {
 	)
 }
 
-const page = usePage()
-const openRemove = ref(false)
 const removeTeamMemberForm = useForm({})
 const removeTeamMember = (member) => {
 	removeTeamMemberForm.delete(
@@ -59,7 +58,6 @@ const removeTeamMember = (member) => {
 			errorBag: 'removeTeamMember',
 			preserveScroll: true,
 			preserveState: true,
-			onSuccess: () => (openRemove.value = false),
 		}
 	)
 }
@@ -107,8 +105,8 @@ const displayableRole = (role) => {
 								<DialogContent>
 									<DialogHeader>
 										<DialogTitle>Manage Role</DialogTitle>
-										<DialogDescription class="sr-only"
-											>Change role of team member
+										<DialogDescription class="sr-only">
+											Change role of team member
 										</DialogDescription>
 									</DialogHeader>
 									<Label for="role">Role</Label>
@@ -132,7 +130,7 @@ const displayableRole = (role) => {
 											:class="{
 												'rounded-t-none': index > 0,
 												'rounded-b-none':
-													index != Object.keys(availableRoles).length - 1,
+													index !== Object.keys(availableRoles).length - 1,
 											}">
 											<p class="font-bold">{{ role.name }}</p>
 											<p>{{ role.description }}</p>
@@ -153,61 +151,32 @@ const displayableRole = (role) => {
 							</Dialog>
 
 							<!-- Leave Team -->
-							<Dialog
+							<ConfirmActionModal
 								v-if="$page.props.auth.user.id === user.id"
-								v-model:open="openLeave">
-								<DialogTrigger as-child>
-									<Button variant="destructive"> Leave</Button>
-								</DialogTrigger>
-								<DialogContent>
-									<DialogHeader>
-										<DialogTitle>Leave Team</DialogTitle>
-										<DialogDescription>
-											Are you sure you want to leave this team?
-										</DialogDescription>
-									</DialogHeader>
-									<div class="flex justify-end gap-2">
-										<DialogClose as-child>
-											<Button variant="outline">Cancel</Button>
-										</DialogClose>
-										<Button
-											variant="destructive"
-											:disabled="leaveTeamForm.processing"
-											@click="leaveTeam">
-											Leave
-										</Button>
-									</div>
-								</DialogContent>
-							</Dialog>
+								title="Leave Team"
+								description="Are you sure you want to leave this team?"
+								:button="{
+									text: 'Leave',
+									variant: 'destructive',
+									disabled: leaveTeamForm.processing,
+								}"
+								@confirm="leaveTeam">
+								<Button variant="destructive">Leave</Button>
+							</ConfirmActionModal>
 
 							<!-- Remove Team Member -->
-							<Dialog
+							<ConfirmActionModal
 								v-else-if="userPermissions.canRemoveTeamMembers"
-								v-model:open="openRemove">
-								<DialogTrigger as-child>
-									<Button variant="destructive">Remove</Button>
-								</DialogTrigger>
-								<DialogContent>
-									<DialogHeader>
-										<DialogTitle>Remove Team Member</DialogTitle>
-										<DialogDescription>
-											Are you sure you would like to remove this person from the
-											team?
-										</DialogDescription>
-									</DialogHeader>
-									<div class="flex justify-end gap-2">
-										<DialogClose as-child>
-											<Button variant="outline">Cancel</Button>
-										</DialogClose>
-										<Button
-											variant="destructive"
-											:disabled="removeTeamMemberForm.processing"
-											@click="removeTeamMember(user)">
-											Remove
-										</Button>
-									</div>
-								</DialogContent>
-							</Dialog>
+								title="Remove Team Member"
+								description="Are you sure you would like to remove this person from the team?"
+								:button="{
+									text: 'Remove',
+									variant: 'destructive',
+									disabled: removeTeamMemberForm.processing,
+								}"
+								@confirm="removeTeamMember(user)">
+								<Button variant="destructive">Remove</Button>
+							</ConfirmActionModal>
 						</div>
 					</div>
 				</CardContent>
