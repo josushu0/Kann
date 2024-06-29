@@ -6,6 +6,7 @@ use App\Models\Column;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ColumnController extends Controller
 {
@@ -14,6 +15,8 @@ class ColumnController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Column::class);
+
         $request->validate([
             'name' => 'required|max:255',
             'project_id' => 'required',
@@ -32,6 +35,8 @@ class ColumnController extends Controller
      */
     public function update(Request $request, Column $column): RedirectResponse
     {
+        Gate::authorize('update', $column);
+
         $request->validate([
             'name' => 'required',
         ]);
@@ -47,6 +52,8 @@ class ColumnController extends Controller
      */
     public function destroy(Column $column)
     {
+        Gate::authorize('delete', $column);
+
         $column->delete();
 
         return redirect()->back();
@@ -54,6 +61,8 @@ class ColumnController extends Controller
 
     public function move(Request $request, Column $column): RedirectResponse
     {
+        Gate::authorize('update', $column);
+
         $request->validate([
             'position' => 'required|numeric',
         ]);

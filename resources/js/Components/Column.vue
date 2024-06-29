@@ -19,6 +19,8 @@ import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
 
 const props = defineProps({
 	column: Object,
+	canUpdateColumn: Boolean,
+	canDeleteColumn: Boolean,
 })
 
 const form = useForm({
@@ -42,7 +44,9 @@ const deleteColumn = () => {
 <template>
 	<Card class="h-fit w-72">
 		<CardHeader class="flex h-full flex-row items-start p-4">
-			<div class="column_drag_handle flex-none cursor-grab p-3">
+			<div
+				v-if="canUpdateColumn"
+				class="column_drag_handle flex-none cursor-grab p-3">
 				<Icon icon="lucide:grip-vertical" />
 			</div>
 			<EditableRoot
@@ -50,6 +54,7 @@ const deleteColumn = () => {
 				v-model="form.name"
 				select-on-focus
 				@submit="updateName"
+				:disabled="!canUpdateColumn"
 				class="flex-1 overflow-hidden break-words">
 				<EditableArea>
 					<EditablePreview as="h3" class="px-3 py-2 font-semibold" />
@@ -57,7 +62,7 @@ const deleteColumn = () => {
 						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
 				</EditableArea>
 			</EditableRoot>
-			<DropdownMenu>
+			<DropdownMenu v-if="canDeleteColumn">
 				<DropdownMenuTrigger as-child>
 					<Button variant="ghost" size="icon" class="flex-none">
 						<Icon icon="lucide:ellipsis-vertical" class="size-4" />

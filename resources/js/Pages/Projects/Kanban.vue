@@ -9,6 +9,9 @@ import CreateColumn from '@/Pages/Projects/Partials/CreateColumn.vue'
 const props = defineProps({
 	project: Object,
 	data: Array,
+	canUpdateColumn: Boolean,
+	canDeleteColumn: Boolean,
+	canCreateColumn: Boolean,
 })
 
 const draggable = ref(null)
@@ -52,11 +55,16 @@ useDraggable(draggable, columns.value, {
 		<div class="flex h-full gap-2 px-10">
 			<!-- Columns -->
 			<div ref="draggable" class="flex h-full gap-2">
-				<Column v-for="column in columns" :key="column.id" :column="column" />
+				<Column
+					v-for="column in columns"
+					:key="column.id"
+					:column="column"
+					:canUpdateColumn="canUpdateColumn"
+					:canDeleteColumn="canDeleteColumn" />
 			</div>
 
 			<!-- Create new column -->
-			<CreateColumn :project_id="project.id" />
+			<CreateColumn v-if="canCreateColumn" :project_id="project.id" />
 		</div>
 	</AppLayout>
 </template>
