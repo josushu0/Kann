@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('columns', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
-            $table->double('position');
-            $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
+            $table->string('description')->nullable();
+            $table->date('due_date')->nullable();
+            $table->foreignUlid('column_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('columns');
+        Schema::dropIfExists('tasks');
     }
 };

@@ -35,6 +35,7 @@ class ProjectFactory extends Factory
                     ['name' => 'Doing', 'position' => 120000],
                     ['name' => 'Done', 'position' => 200000],
                 )
+                ->withTasks()
                 ->when(is_callable($callback), $callback),
             'columns',
         );

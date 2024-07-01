@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,5 +20,14 @@ class ColumnFactory extends Factory
         return [
             'name' => $this->faker->word(),
         ];
+    }
+
+    public function withTasks(?callable $callback = null): static
+    {
+        return $this->has(
+            Task::factory(3)
+                ->when(is_callable($callback), $callback),
+            'tasks'
+        );
     }
 }
