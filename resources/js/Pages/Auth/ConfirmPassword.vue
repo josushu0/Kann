@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import InputError from '@/Components/InputError.vue'
 import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue'
@@ -31,12 +31,10 @@ const submit = () => {
 
 	<AuthenticationLayout>
 		<template #logo>
-			<Link
-				:href="route('landing')"
-				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+			<div class="mb-5">
 				<span class="sr-only">Home</span>
 				<ApplicationLogo class="size-16 fill-background stroke-primary" />
-			</Link>
+			</div>
 		</template>
 
 		<CardDescription class="my-4">

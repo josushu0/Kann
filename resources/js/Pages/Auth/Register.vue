@@ -27,12 +27,10 @@ const submit = () => {
 
 	<AuthenticationLayout>
 		<template #logo>
-			<Link
-				:href="route('landing')"
-				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+			<div class="mb-5">
 				<span class="sr-only">Home</span>
 				<ApplicationLogo class="size-16 fill-background stroke-primary" />
-			</Link>
+			</div>
 		</template>
 
 		<form @submit.prevent="submit" class="space-y-4">

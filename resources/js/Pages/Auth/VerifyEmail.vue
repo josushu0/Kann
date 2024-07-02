@@ -26,12 +26,10 @@ const verificationLinkSent = computed(
 
 	<AuthenticationLayout>
 		<template #logo>
-			<Link
-				:href="route('landing')"
-				class="mb-5 rounded outline-none focus-visible:ring-2 focus-visible:ring-primary">
+			<div class="mb-5">
 				<span class="sr-only">Home</span>
 				<ApplicationLogo class="size-16 fill-background stroke-primary" />
-			</Link>
+			</div>
 		</template>
 
 		<CardDescription class="space-y-4">
@@ -56,7 +54,7 @@ const verificationLinkSent = computed(
 					</Button>
 
 					<Button variant="link" as-child>
-						<Link :href="route('logout')" method="post"> Log Out </Link>
+						<Link :href="route('logout')" method="post"> Log Out</Link>
 					</Button>
 				</div>
 			</div>
