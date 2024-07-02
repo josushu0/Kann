@@ -10,7 +10,7 @@ defineProps({
 	title: String,
 	project: {
 		type: String,
-		default: false,
+		default: '',
 	},
 })
 </script>

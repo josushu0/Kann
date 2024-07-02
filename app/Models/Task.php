@@ -13,6 +13,26 @@ class Task extends Model
 
     protected $fillable = ['name', 'description', 'due_date', 'column_id'];
 
+    const float POSITION_GAP = 60000;
+
+    const float MIN_GAP = 1;
+
+    public static function booted()
+    {
+        static::creating(function ($task) {
+            $task->position = self::query()
+                ->where('column_id', $task->column_id)
+                ->orderBy('position')
+                ->first()?->position + self::POSITION_GAP;
+        });
+
+        static::saved(function ($task) {
+            // TODO
+            if ($task->position < self::MIN_GAP) {
+            }
+        });
+    }
+
     public function column(): BelongsTo
     {
         return $this->belongsTo(Column::class);

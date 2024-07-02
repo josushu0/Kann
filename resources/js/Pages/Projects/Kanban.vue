@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-import Column from '@/Components/Column.vue'
+import KanbanColumn from '@/Components/KanbanColumn.vue'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import { useDraggable } from 'vue-draggable-plus'
@@ -55,7 +55,7 @@ useDraggable(draggable, columns.value, {
 		<div class="flex h-full gap-2 px-10">
 			<!-- Columns -->
 			<div ref="draggable" class="flex h-full gap-2">
-				<Column
+				<KanbanColumn
 					v-for="column in columns"
 					:key="column.id"
 					:column="column"

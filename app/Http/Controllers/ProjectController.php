@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Column;
 use App\Models\Project;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -57,7 +58,9 @@ class ProjectController extends Controller
 
         return Inertia::render('Projects/Kanban', [
             'project' => $project,
-            'data' => $project->columns()->orderBy('position')->get(),
+            'data' => $project->columns()->with(['tasks' => function (Builder $query) {
+                $query->orderBy('position');
+            }])->orderBy('position')->get(),
             'canUpdateColumn' => Gate::allows('update', $project),
             'canDeleteColumn' => Gate::allows('delete', $project),
             'canCreateColumn' => Gate::allows('create', Column::class),

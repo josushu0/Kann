@@ -25,7 +25,13 @@ class ColumnFactory extends Factory
     public function withTasks(?callable $callback = null): static
     {
         return $this->has(
-            Task::factory(3)
+            Task::factory()
+                ->count(3)
+                ->sequence(
+                    ['position' => 60000],
+                    ['position' => 120000],
+                    ['position' => 200000]
+                )
                 ->when(is_callable($callback), $callback),
             'tasks'
         );

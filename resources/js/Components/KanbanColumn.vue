@@ -1,5 +1,9 @@
 <script setup>
-import { Card, CardHeader } from '@/Components/shadcn/ui/card/index.js'
+import {
+	Card,
+	CardContent,
+	CardHeader,
+} from '@/Components/shadcn/ui/card/index.js'
 import { router, useForm } from '@inertiajs/vue3'
 import {
 	DropdownMenu,
@@ -16,6 +20,9 @@ import {
 	EditableRoot,
 } from 'radix-vue'
 import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
+import { useDraggable } from 'vue-draggable-plus'
+import { ref } from 'vue'
+import KanbanTask from '@/Components/KanbanTask.vue'
 
 const props = defineProps({
 	column: Object,
@@ -39,6 +46,69 @@ const deleteColumn = () => {
 		preserveScroll: true,
 	})
 }
+
+const draggable = ref(null)
+const tasks = ref(props.column.tasks)
+useDraggable(draggable, tasks, {
+	handle: '.task_drag_handle',
+	ghostClass: 'border-primary',
+	group: 'tasks',
+	onAdd: (e) => {
+		const index = e.newIndex
+		const prevTask = tasks.value[index - 1]
+		const nextTask = tasks.value[index + 1]
+		const task = tasks.value[index]
+
+		let position = task.position
+
+		if (prevTask && nextTask) {
+			position = (prevTask.position + nextTask.position) / 2
+		} else if (nextTask) {
+			position = nextTask.position / 2
+		} else if (prevTask) {
+			position = prevTask.position + prevTask.position / 2
+		}
+
+		router.put(
+			route('tasks.move', { task: task.id }),
+			{
+				position: position,
+				column_id: props.column.id,
+			},
+			{
+				preserveState: false,
+				preserveScroll: true,
+			}
+		)
+	},
+	onUpdate: (e) => {
+		const index = e.newIndex
+		const prevTask = tasks.value[index - 1]
+		const nextTask = tasks.value[index + 1]
+		const task = tasks.value[index]
+
+		let position = task.position
+
+		if (prevTask && nextTask) {
+			position = (prevTask.position + nextTask.position) / 2
+		} else if (nextTask) {
+			position = nextTask.position / 2
+		} else if (prevTask) {
+			position = prevTask.position + prevTask.position / 2
+		}
+
+		router.put(
+			route('tasks.move', { task: task.id }),
+			{
+				position: position,
+			},
+			{
+				preserveState: false,
+				preserveScroll: true,
+			}
+		)
+	},
+})
 </script>
 
 <template>
@@ -57,7 +127,7 @@ const deleteColumn = () => {
 				:disabled="!canUpdateColumn"
 				class="flex-1 overflow-hidden break-words">
 				<EditableArea>
-					<EditablePreview as="h3" class="px-3 py-2 font-semibold" />
+					<EditablePreview as="h2" class="px-3 py-2 font-semibold" />
 					<EditableInput
 						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
 				</EditableArea>
@@ -88,5 +158,10 @@ const deleteColumn = () => {
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</CardHeader>
+		<CardContent>
+			<div ref="draggable" class="flex flex-col gap-2">
+				<KanbanTask v-for="task in tasks" :key="task.id" :task="task" />
+			</div>
+		</CardContent>
 	</Card>
 </template>

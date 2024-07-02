@@ -24,8 +24,6 @@ const props = defineProps({
 	},
 })
 
-console.log(props.canCreateProject)
-
 const filteredProjects = ref(props.projects)
 const search = ref('')
 
