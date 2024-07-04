@@ -61,6 +61,7 @@ class ProjectController extends Controller
             'data' => $project->columns()->with(['tasks' => function (Builder $query) {
                 $query->orderBy('position');
             }])->orderBy('position')->get(),
+            'teamMembers' => $project->team->allUsers(),
             'canUpdateColumn' => Gate::allows('update', $project),
             'canDeleteColumn' => Gate::allows('delete', $project),
             'canCreateColumn' => Gate::allows('create', Column::class),

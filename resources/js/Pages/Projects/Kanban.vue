@@ -9,6 +9,7 @@ import CreateColumn from '@/Pages/Projects/Partials/CreateColumn.vue'
 const props = defineProps({
 	project: Object,
 	data: Array,
+	teamMembers: Array,
 	canUpdateColumn: Boolean,
 	canDeleteColumn: Boolean,
 	canCreateColumn: Boolean,
@@ -59,6 +60,8 @@ useDraggable(draggable, columns.value, {
 					v-for="column in columns"
 					:key="column.id"
 					:column="column"
+					:columns="columns"
+					:teamMembers="teamMembers"
 					:canUpdateColumn="canUpdateColumn"
 					:canDeleteColumn="canDeleteColumn" />
 			</div>

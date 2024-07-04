@@ -23,11 +23,14 @@ import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { ref } from 'vue'
 import KanbanTask from '@/Components/KanbanTask.vue'
+import CreateTask from '@/Components/CreateTask.vue'
 
 const props = defineProps({
 	column: Object,
+	columns: Array,
 	canUpdateColumn: Boolean,
 	canDeleteColumn: Boolean,
+	teamMembers: Array,
 })
 
 const form = useForm({
@@ -158,10 +161,28 @@ useDraggable(draggable, tasks, {
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</CardHeader>
-		<CardContent>
+		<CardContent class="flex flex-col gap-2">
 			<div ref="draggable" class="flex flex-col gap-2">
-				<KanbanTask v-for="task in tasks" :key="task.id" :task="task" />
+				<KanbanTask
+					v-for="task in tasks"
+					:key="task.id"
+					:task="task"
+					:column="column.id"
+					:columns="columns"
+					:teamMembers="teamMembers" />
 			</div>
+			<CreateTask
+				:column="column.id"
+				:columns="columns"
+				:teamMembers="teamMembers">
+				<Button
+					type="button"
+					variant="ghost"
+					class="w-full justify-start gap-2">
+					<Icon icon="lucide:plus" />
+					Add task
+				</Button>
+			</CreateTask>
 		</CardContent>
 	</Card>
 </template>
