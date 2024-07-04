@@ -24,6 +24,7 @@ import { useDraggable } from 'vue-draggable-plus'
 import { ref } from 'vue'
 import KanbanTask from '@/Components/KanbanTask.vue'
 import CreateTask from '@/Components/CreateTask.vue'
+import { Textarea } from '@/Components/shadcn/ui/textarea/index'
 
 const props = defineProps({
 	column: Object,
@@ -132,7 +133,9 @@ useDraggable(draggable, tasks, {
 				<EditableArea>
 					<EditablePreview as="h2" class="px-3 py-2 font-semibold" />
 					<EditableInput
-						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
+						as="textarea"
+						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50">
+					</EditableInput>
 				</EditableArea>
 			</EditableRoot>
 			<DropdownMenu v-if="canDeleteColumn">
@@ -186,3 +189,9 @@ useDraggable(draggable, tasks, {
 		</CardContent>
 	</Card>
 </template>
+
+<style scoped>
+textarea {
+	field-sizing: content;
+}
+</style>
