@@ -17,7 +17,7 @@ import {
 import { Label } from '@/Components/shadcn/ui/label/index.js'
 import { Input } from '@/Components/shadcn/ui/input/index.js'
 import InputError from '@/Components/InputError.vue'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import { Textarea } from '@/Components/shadcn/ui/textarea/index.js'
 import { Button } from '@/Components/shadcn/ui/button/index.js'
 import {
@@ -50,6 +50,7 @@ import {
 	SelectItem,
 	SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
+import ConfirmActionModal from './ConfirmActionModal.vue'
 
 const props = defineProps({
 	task: {
@@ -78,8 +79,39 @@ const teamTags = props.teamMembers.map((member) => {
 })
 const searchTerm = ref('')
 const filteredMembers = computed(() =>
-	teamTags.filter((i) => !form.assigned.includes(i.label))
+	teamTags.filter((member) => !form.assigned.includes(member.label))
 )
+
+const deleteTask = () => {
+	router.delete(route('tasks.destroy', props.task.id), {
+		preserveState: false,
+		preserveScroll: true,
+	})
+}
+
+const handleSubmit = () => {
+	if (props.task) {
+		form
+			.transform((data) => ({
+				...data,
+				due_date: data.due_date.toString(),
+			}))
+			.put(route('tasks.update', props.task.id), {
+				preserveState: false,
+				preserveScroll: true,
+			})
+	} else {
+		form
+			.transform((data) => ({
+				...data,
+				due_date: data.due_date.toString(),
+			}))
+			.post(route('tasks.store'), {
+				preserveState: false,
+				preserveScroll: true,
+			})
+	}
+}
 </script>
 
 <template>
@@ -102,7 +134,7 @@ const filteredMembers = computed(() =>
 						}}
 					</SheetDescription>
 				</SheetHeader>
-				<form @submit.prevent="" class="mt-3 w-full space-y-4">
+				<form @submit.prevent="handleSubmit" class="mt-3 w-full space-y-4">
 					<div>
 						<Label for="column">Column</Label>
 						<Select
@@ -208,12 +240,21 @@ const filteredMembers = computed(() =>
 						</ComboboxRoot>
 					</div>
 					<div class="flex justify-between gap-2">
-						<Button v-if="task" variant="destructive" type="button">
-							Delete
-						</Button>
+						<ConfirmActionModal
+							v-if="task"
+							title="Delete Task?"
+							description="Are you sure you want to delete this column?"
+							:button="{
+								text: 'Delete',
+								variant: 'destructive',
+								disabled: false,
+							}"
+							@confirm="deleteTask">
+							<Button variant="destructive" type="button"> Delete </Button>
+						</ConfirmActionModal>
 						<div class="flex w-full justify-end gap-2">
 							<Button variant="outline" type="button">Cancel</Button>
-							<Button>Save</Button>
+							<Button type="submit">Save</Button>
 						</div>
 					</div>
 				</form>
