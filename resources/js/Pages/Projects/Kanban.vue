@@ -53,7 +53,7 @@ useDraggable(draggable, columns.value, {
 
 <template>
 	<AppLayout :title="project.name" :project="project.id">
-		<div class="flex h-full gap-2 px-10">
+		<div class="mx-10 flex h-full gap-2 overflow-x-scroll">
 			<!-- Columns -->
 			<div ref="draggable" class="flex h-full gap-2">
 				<KanbanColumn

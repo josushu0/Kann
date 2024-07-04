@@ -24,7 +24,6 @@ import { useDraggable } from 'vue-draggable-plus'
 import { ref } from 'vue'
 import KanbanTask from '@/Components/KanbanTask.vue'
 import CreateTask from '@/Components/CreateTask.vue'
-import { Textarea } from '@/Components/shadcn/ui/textarea/index'
 
 const props = defineProps({
 	column: Object,
@@ -116,7 +115,7 @@ useDraggable(draggable, tasks, {
 </script>
 
 <template>
-	<Card class="h-fit w-72">
+	<Card class="flex h-fit max-h-full w-72 flex-col">
 		<CardHeader class="flex h-full flex-row items-start p-4">
 			<div
 				v-if="canUpdateColumn"
@@ -164,8 +163,8 @@ useDraggable(draggable, tasks, {
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</CardHeader>
-		<CardContent class="flex flex-col gap-2">
-			<div ref="draggable" class="flex flex-col gap-2">
+		<CardContent class="flex flex-col gap-2 overflow-hidden">
+			<div ref="draggable" class="flex flex-col gap-2 overflow-scroll">
 				<KanbanTask
 					v-for="task in tasks"
 					:key="task.id"
