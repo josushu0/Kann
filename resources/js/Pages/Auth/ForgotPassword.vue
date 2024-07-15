@@ -1,63 +1,59 @@
-<script setup>
-import { Head, useForm } from '@inertiajs/vue3'
-import InputError from '@/Components/InputError.vue'
-import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue'
-import ApplicationLogo from '@/Components/ApplicationLogo.vue'
-import { CardDescription } from '@/Components/shadcn/ui/card/index.js'
-import { Label } from '@/Components/shadcn/ui/label/index.js'
-import { Input } from '@/Components/shadcn/ui/input/index.js'
-import { Button } from '@/Components/shadcn/ui/button/index.js'
+<script setup lang="ts">
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { Head, useForm } from '@inertiajs/vue3';
 
-defineProps({
-	status: String,
-})
+defineProps<{
+    status?: string;
+}>();
 
 const form = useForm({
-	email: '',
-})
+    email: '',
+});
 
 const submit = () => {
-	form.post(route('password.email'))
-}
+    form.post(route('password.email'));
+};
 </script>
 
 <template>
-	<Head title="Forgot Password" />
+    <GuestLayout>
+        <Head title="Forgot Password" />
 
-	<AuthenticationLayout>
-		<template #logo>
-			<div class="mb-5">
-				<span class="sr-only">Home</span>
-				<ApplicationLogo class="size-16 fill-background stroke-primary" />
-			</div>
-		</template>
+        <div class="mb-4 text-sm text-gray-600">
+            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
+            link that will allow you to choose a new one.
+        </div>
 
-		<div v-if="status" class="mb-4 text-sm font-medium text-foreground">
-			{{ status }}
-		</div>
+        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+            {{ status }}
+        </div>
 
-		<CardDescription class="my-4">
-			Forgot your password? No problem. Just let us know your email address and
-			we will email you a password reset link that will allow you to choose a
-			new one.
-		</CardDescription>
+        <form @submit.prevent="submit">
+            <div>
+                <InputLabel for="email" value="Email" />
 
-		<form @submit.prevent="submit" class="space-y-4">
-			<div>
-				<Label for="email">Email</Label>
-				<Input
-					type="email"
-					placeholder="Email"
-					id="email"
-					v-model="form.email" />
-				<InputError class="mt-2" :message="form.errors.email" />
-			</div>
+                <TextInput
+                    id="email"
+                    type="email"
+                    class="mt-1 block w-full"
+                    v-model="form.email"
+                    required
+                    autofocus
+                    autocomplete="username"
+                />
 
-			<div class="flex items-center justify-end">
-				<Button type="submit" :disabled="form.processing">
-					Email Password Reset Link
-				</Button>
-			</div>
-		</form>
-	</AuthenticationLayout>
+                <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Email Password Reset Link
+                </PrimaryButton>
+            </div>
+        </form>
+    </GuestLayout>
 </template>
