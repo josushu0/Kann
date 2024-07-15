@@ -7,8 +7,27 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
+import { definePreset } from '@primevue/themes'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+
+const preset = definePreset(Aura, {
+	semantic: {
+		primary: {
+			50: '{amber.50}',
+			100: '{amber.100}',
+			200: '{amber.200}',
+			300: '{amber.300}',
+			400: '{amber.400}',
+			500: '{amber.500}',
+			600: '{amber.600}',
+			700: '{amber.700}',
+			800: '{amber.800}',
+			900: '{amber.900}',
+			950: '{amber.950}',
+		},
+	},
+})
 
 createInertiaApp({
 	title: (title) => `${title} - ${appName}`,
@@ -23,7 +42,7 @@ createInertiaApp({
 			.use(ZiggyVue)
 			.use(PrimeVue, {
 				theme: {
-					preset: Aura,
+					preset,
 				},
 			})
 			.mount(el)
