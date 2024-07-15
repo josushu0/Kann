@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import Checkbox from '@/Components/Checkbox.vue'
-import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import GuestLayout from '@/Layouts/GuestLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 
 defineProps<{
@@ -30,63 +27,63 @@ const submit = () => {
 <template>
 	<GuestLayout>
 		<Head title="Log in" />
+		<Card class="w-full max-w-md">
+			<template #content>
+				<div v-if="status" class="mb-4 text-sm font-medium text-emerald-500">
+					{{ status }}
+				</div>
 
-		<div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-			{{ status }}
-		</div>
+				<form @submit.prevent="submit" class="space-y-4 text-color">
+					<div class="flex flex-col">
+						<label for="email" class="text-sm">Email</label>
 
-		<form @submit.prevent="submit">
-			<div>
-				<InputLabel for="email" value="Email" />
+						<InputText
+							id="email"
+							name="email"
+							type="email"
+							v-model="form.email"
+							:invalid="form.errors.email ? true : false"
+							required
+							autofocus />
 
-				<TextInput
-					id="email"
-					type="email"
-					class="mt-1 block w-full"
-					v-model="form.email"
-					required
-					autofocus
-					autocomplete="username" />
+						<InputError :message="form.errors.email" />
+					</div>
 
-				<InputError class="mt-2" :message="form.errors.email" />
-			</div>
+					<div class="flex flex-col">
+						<label for="password" class="text-sm">Password</label>
 
-			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
+						<Password
+							id="password"
+							name="password"
+							v-model="form.password"
+							:invalid="form.errors.password ? true : false"
+							toggle-mask
+							:feedback="false"
+							:pt="{ pcInput: { root: { class: 'w-full' } } }"
+							required />
 
-				<TextInput
-					id="password"
-					type="password"
-					class="mt-1 block w-full"
-					v-model="form.password"
-					required
-					autocomplete="current-password" />
+						<InputError :message="form.errors.password" />
+					</div>
 
-				<InputError class="mt-2" :message="form.errors.password" />
-			</div>
+					<div>
+						<label class="flex items-center gap-2">
+							<Checkbox name="remember" v-model="form.remember" binary />
+							<span class="text-sm">Remember me</span>
+						</label>
+					</div>
 
-			<div class="mt-4 block">
-				<label class="flex items-center">
-					<Checkbox name="remember" v-model:checked="form.remember" />
-					<span class="ms-2 text-sm text-gray-600">Remember me</span>
-				</label>
-			</div>
+					<div class="flex items-center justify-end gap-4">
+						<Link
+							v-if="canResetPassword"
+							:href="route('password.request')"
+							class="text-sm outline-1 outline-offset-4 rounded-border text-muted-color focus:outline focus:outline-primary">
+							Forgot your Password?
+						</Link>
 
-			<div class="mt-4 flex items-center justify-end">
-				<Link
-					v-if="canResetPassword"
-					:href="route('password.request')"
-					class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-					Forgot your password?
-				</Link>
-
-				<PrimaryButton
-					class="ms-4"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Log in
-				</PrimaryButton>
-			</div>
-		</form>
+						<Button :disabled="form.processing" type="submit" label="Log in" />
+					</div>
+				</form>
+			</template>
+		</Card>
 	</GuestLayout>
 </template>
