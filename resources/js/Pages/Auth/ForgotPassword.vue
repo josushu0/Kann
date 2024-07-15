@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
 defineProps<{
@@ -23,39 +20,42 @@ const submit = () => {
 	<GuestLayout>
 		<Head title="Forgot Password" />
 
-		<div class="mb-4 text-sm text-gray-600">
-			Forgot your password? No problem. Just let us know your email address and
-			we will email you a password reset link that will allow you to choose a
-			new one.
-		</div>
+		<Card class="w-full max-w-md">
+			<template #subtitle>
+				Forgot your password? No problem. Just let us know your email address
+				and we will email you a password reset link that will allow you to
+				choose a new one.
+			</template>
 
-		<div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-			{{ status }}
-		</div>
+			<template #content>
+				<div v-if="status" class="mb-4 text-sm font-medium text-emerald-500">
+					{{ status }}
+				</div>
 
-		<form @submit.prevent="submit">
-			<div>
-				<InputLabel for="email" value="Email" />
+				<form @submit.prevent="submit" class="space-y-4 text-color">
+					<div class="flex flex-col">
+						<label for="email" class="text-sm">Email</label>
 
-				<TextInput
-					id="email"
-					type="email"
-					class="mt-1 block w-full"
-					v-model="form.email"
-					required
-					autofocus
-					autocomplete="username" />
+						<InputText
+							id="email"
+							name="email"
+							type="email"
+							v-model="form.email"
+							:invalid="form.errors.email ? true : false"
+							required
+							autofocus />
 
-				<InputError class="mt-2" :message="form.errors.email" />
-			</div>
+						<InputError :message="form.errors.email" />
+					</div>
 
-			<div class="mt-4 flex items-center justify-end">
-				<PrimaryButton
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Email Password Reset Link
-				</PrimaryButton>
-			</div>
-		</form>
+					<div class="flex justify-end">
+						<Button
+							type="submit"
+							:disabled="form.processing"
+							label="Email Password Reset Link" />
+					</div>
+				</form>
+			</template>
+		</Card>
 	</GuestLayout>
 </template>
