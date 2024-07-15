@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
@@ -31,57 +28,66 @@ const submit = () => {
 	<GuestLayout>
 		<Head title="Reset Password" />
 
-		<form @submit.prevent="submit">
-			<div>
-				<InputLabel for="email" value="Email" />
+		<Card class="w-full max-w-md">
+			<template #content>
+				<form @submit.prevent="submit" class="space-y-4 text-color">
+					<div class="flex flex-col">
+						<label for="email" class="text-sm">Email</label>
 
-				<TextInput
-					id="email"
-					type="email"
-					class="mt-1 block w-full"
-					v-model="form.email"
-					required
-					autofocus
-					autocomplete="username" />
+						<InputText
+							id="email"
+							name="email"
+							type="email"
+							v-model="form.email"
+							:invalid="form.errors.email ? true : false"
+							required
+							autofocus />
 
-				<InputError class="mt-2" :message="form.errors.email" />
-			</div>
+						<InputError :message="form.errors.email" />
+					</div>
 
-			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
+					<div class="flex flex-col">
+						<label for="password" class="text-sm">Password</label>
 
-				<TextInput
-					id="password"
-					type="password"
-					class="mt-1 block w-full"
-					v-model="form.password"
-					required
-					autocomplete="new-password" />
+						<Password
+							id="password"
+							name="password"
+							v-model="form.password"
+							:invalid="form.errors.password ? true : false"
+							toggle-mask
+							:feedback="false"
+							:pt="{ pcInput: { root: { class: 'w-full' } } }"
+							required />
 
-				<InputError class="mt-2" :message="form.errors.password" />
-			</div>
+						<InputError :message="form.errors.password" />
+					</div>
 
-			<div class="mt-4">
-				<InputLabel for="password_confirmation" value="Confirm Password" />
+					<div class="flex flex-col">
+						<label for="password_confirmation" class="text-sm">
+							Confirm Password
+						</label>
 
-				<TextInput
-					id="password_confirmation"
-					type="password"
-					class="mt-1 block w-full"
-					v-model="form.password_confirmation"
-					required
-					autocomplete="new-password" />
+						<Password
+							id="password_confirmation"
+							name="password_confirmation"
+							v-model="form.password_confirmation"
+							:invalid="form.errors.password_confirmation ? true : false"
+							toggle-mask
+							:feedback="false"
+							:pt="{ pcInput: { root: { class: 'w-full' } } }"
+							required />
 
-				<InputError class="mt-2" :message="form.errors.password_confirmation" />
-			</div>
+						<InputError :message="form.errors.password_confirmation" />
+					</div>
 
-			<div class="mt-4 flex items-center justify-end">
-				<PrimaryButton
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing">
-					Reset Password
-				</PrimaryButton>
-			</div>
-		</form>
+					<div class="flex justify-end">
+						<Button
+							type="submit"
+							:disabled="form.processing"
+							label="Reset Password" />
+					</div>
+				</form>
+			</template>
+		</Card>
 	</GuestLayout>
 </template>
