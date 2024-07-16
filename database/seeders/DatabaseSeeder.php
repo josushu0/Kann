@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'avatar' => 'https://gravatar.com/avatar/'.hash('sha256', strtolower(trim('test@example.com'))).'?s=200&d=identicon',
         ]);
     }
 }
