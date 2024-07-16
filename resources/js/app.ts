@@ -9,6 +9,8 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import { definePreset } from '@primevue/themes'
 import 'primeicons/primeicons.css'
+import Ripple from 'primevue/ripple'
+import ConfimationService from 'primevue/confirmationservice'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
@@ -41,11 +43,13 @@ createInertiaApp({
 		createApp({ render: () => h(App, props) })
 			.use(plugin)
 			.use(ZiggyVue)
+			.use(ConfimationService)
 			.use(PrimeVue, {
 				theme: {
 					preset,
 				},
 			})
+			.directive('ripple', Ripple)
 			.mount(el)
 	},
 	progress: {

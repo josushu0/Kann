@@ -14,7 +14,7 @@ defineProps<{
 	<Head title="Profile" />
 
 	<AuthenticatedLayout title="Profile">
-		<div class="container mx-auto space-y-4">
+		<div class="container mx-auto space-y-4 py-6">
 			<UpdateProfileInformationForm :status="status" />
 
 			<UpdatePasswordForm />
