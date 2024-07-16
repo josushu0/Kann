@@ -15,5 +15,8 @@ declare module 'vue' {
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
     Password: typeof import('primevue/password')['default']
+    Tab: typeof import('primevue/tab')['default']
+    TabList: typeof import('primevue/tablist')['default']
+    Tabs: typeof import('primevue/tabs')['default']
   }
 }
