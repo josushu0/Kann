@@ -31,14 +31,11 @@ const toggleUserMenu = (event: MouseEvent) => {
 	userMenu.value?.toggle(event)
 }
 
+const currentRoute = ref(route().current())
 const routes = ref([
 	{ label: 'Dashboard', value: 'dashboard' },
 	{ label: 'Users', value: 'users.index' },
 ])
-
-const navigateDashboard = (value: number) => {
-	router.get(route(value.toString()))
-}
 </script>
 
 <template>
@@ -69,18 +66,15 @@ const navigateDashboard = (value: number) => {
 				:model="userMenuItems" />
 		</nav>
 		<Tabs
-			v-if="dashboard"
-			:value="route().current()!"
-			@update:value="navigateDashboard"
+			v-if="dashboard && currentRoute"
+			:value="currentRoute"
 			pt:root:class="border-b border-surface">
 			<TabList pt:tabs:class="!bg-surface-100 dark:!bg-surface-950 !border-0">
-				<Tab
-					v-for="tab in routes"
-					:key="tab.label"
-					:value="tab.value"
-					pt:root:class="!py-2">
-					{{ tab.label }}
-				</Tab>
+				<Link :href="route(tab.value)" v-for="tab in routes" :key="tab.value">
+					<Tab :value="tab.value" pt:root:class="!py-2">
+						{{ tab.label }}
+					</Tab>
+				</Link>
 			</TabList>
 		</Tabs>
 

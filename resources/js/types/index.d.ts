@@ -2,12 +2,12 @@ export interface User {
 	id: number
 	name: string
 	email: string
-	email_verified_at: string
 	avatar: string
 	title: string
 	department: string
 	phone: string
-	created_ad: string
+	created_at: string
+	updated_at: string
 }
 
 export type PageProps<

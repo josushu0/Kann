@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { UserPaginator } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import { PageState } from 'primevue/paginator'
 import { useConfirm } from 'primevue/useconfirm'
 import { ref } from 'vue'
@@ -46,10 +46,6 @@ const changePage = (event: PageState) => {
 	)
 }
 
-const editUser = (id: string) => {
-	router.get(route('users.edit', id))
-}
-
 const confirm = useConfirm()
 const deleteUser = (id: string) => {
 	confirm.require({
@@ -91,7 +87,11 @@ const deleteUser = (id: string) => {
 				<Column field="name" header="Name" sortable>
 					<template #body="slotProps">
 						<div class="flex items-center gap-2">
-							<Avatar :image="slotProps.data.avatar" shape="circle" />
+							<Link
+								:href="route('users.edit', slotProps.data.id)"
+								class="size-8">
+								<Avatar :image="slotProps.data.avatar" shape="circle" />
+							</Link>
 							<span>{{ slotProps.data.name }}</span>
 						</div>
 					</template>
@@ -102,21 +102,16 @@ const deleteUser = (id: string) => {
 				<Column field="created_at" header="Created at" sortable>
 					<template #body="slotProps">
 						<span>{{
-							new Date(slotProps.data.created_at).toLocaleDateString() +
-							' ' +
-							new Date(slotProps.data.created_at).toLocaleTimeString()
+							new Date(slotProps.data.created_at).toLocaleString()
 						}}</span>
 					</template>
 				</Column>
 				<Column header="Actions">
 					<template #body="slotProps">
 						<div class="flex gap-2">
-							<Button
-								icon="pi pi-pencil"
-								text
-								rounded
-								severity="secondary"
-								@click="() => editUser(slotProps.data.id)" />
+							<Link :href="route('users.edit', slotProps.data.id)">
+								<Button icon="pi pi-pencil" text rounded severity="secondary" />
+							</Link>
 							<Button
 								icon="pi pi-trash"
 								text
@@ -136,7 +131,14 @@ const deleteUser = (id: string) => {
 					:first="users.from - 1"
 					pt:paginatorContainer:class="border dark:border-surface-800"
 					pt:root:class="!rounded-none"
-					@page="changePage"></Paginator>
+					@page="changePage">
+					<template #start></template>
+					<template #end>
+						<Link :href="route('users.create')">
+							<Button icon="pi pi-plus" />
+						</Link>
+					</template>
+				</Paginator>
 			</div>
 		</div>
 	</AuthenticatedLayout>

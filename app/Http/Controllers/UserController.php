@@ -46,20 +46,27 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['sometimes', 'required', Rules\Password::defaults()],
+            'title' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:13',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'title' => $request->title,
+            'department' => $request->department,
+            'phone' => $request->phone,
+            'avatar' => 'https://gravatar.com/avatar/'.hash('sha256', strtolower(trim($request->email))).'?s=200&d=identicon',
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('users.index'));
     }
 
     /**
@@ -76,16 +83,26 @@ class UserController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Users/Edit', [
-            'user' => User::find($id)->get(),
+            'user' => User::find($id),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|',
+            'title' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:13',
+        ]);
+
+        User::find($id)->update($validated);
+
+        return redirect(route('users.index'));
     }
 
     /**
