@@ -112,4 +112,19 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Admin user
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the credentials of the default admin user that will
+    | be created when you seed your Database.
+    |
+    */
+
+    'admin' => [
+        'name' => env('ADMIN_NAME', ''),
+        'email' => env('ADMIN_EMAIL', ''),
+        'password' => env('ADMIN_PASSWORD', ''),
+    ],
 ];
