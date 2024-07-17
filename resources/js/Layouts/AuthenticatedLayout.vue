@@ -10,6 +10,7 @@ defineProps<{
 	dashboard?: boolean
 }>()
 
+const navDrawer = ref(false)
 const userMenu = ref<MenuMethods | null>(null)
 const userMenuItems = ref<MenuItem[]>([
 	{
@@ -35,20 +36,68 @@ const currentRoute = ref(route().current())
 const routes = ref([
 	{ label: 'Dashboard', value: 'dashboard' },
 	{ label: 'Users', value: 'users.index' },
+	{ label: 'Roles', value: 'roles.index' },
 ])
 </script>
 
 <template>
 	<div class="flex h-screen flex-col bg-surface-100 dark:bg-surface-950">
 		<nav
-			class="flex items-center justify-between border-b bg-inherit px-4 py-2 border-surface">
+			class="flex items-center justify-between border-b bg-inherit px-4 border-surface"
+			:class="{ 'py-1': !dashboard, 'py-1 md:py-0': dashboard }">
 			<div class="flex items-center gap-2">
 				<Link
 					:href="route('dashboard')"
 					class="rounded outline-1 focus:outline focus:outline-primary">
 					<ApplicationLogo class="size-10 fill-none stroke-primary" />
 				</Link>
-				<span class="font-bold">{{ title }}</span>
+				<div v-if="dashboard && currentRoute">
+					<div class="block md:hidden">
+						<Drawer v-model:visible="navDrawer">
+							<div class="flex flex-col">
+								<Link
+									:href="route('dashboard')"
+									class="py-2"
+									:class="{ 'text-primary': $page.component === 'Dashboard' }">
+									Dashboard
+								</Link>
+								<Link
+									:href="route('users.index')"
+									class="py-2"
+									:class="{ 'text-primary': $page.component === 'Users/List' }">
+									Users
+								</Link>
+								<Link
+									:href="route('roles.index')"
+									class="py-2"
+									:class="{ 'text-primary': $page.component === 'Roles/List' }">
+									Roles
+								</Link>
+							</div>
+						</Drawer>
+						<Button
+							icon="pi pi-bars"
+							text
+							severity="secondary"
+							@click="navDrawer = true" />
+					</div>
+					<div class="hidden md:block">
+						<Tabs :value="currentRoute">
+							<TabList
+								pt:tabs:class="!bg-surface-100 dark:!bg-surface-950 !border-0">
+								<Link
+									:href="route(tab.value)"
+									v-for="tab in routes"
+									:key="tab.value">
+									<Tab :value="tab.value" pt:root:class="!py-3">
+										{{ tab.label }}
+									</Tab>
+								</Link>
+							</TabList>
+						</Tabs>
+					</div>
+				</div>
+				<span v-else class="font-bold">{{ title }}</span>
 			</div>
 			<Button
 				icon="pi"
@@ -65,18 +114,6 @@ const routes = ref([
 				:popup="true"
 				:model="userMenuItems" />
 		</nav>
-		<Tabs
-			v-if="dashboard && currentRoute"
-			:value="currentRoute"
-			pt:root:class="border-b border-surface">
-			<TabList pt:tabs:class="!bg-surface-100 dark:!bg-surface-950 !border-0">
-				<Link :href="route(tab.value)" v-for="tab in routes" :key="tab.value">
-					<Tab :value="tab.value" pt:root:class="!py-2">
-						{{ tab.label }}
-					</Tab>
-				</Link>
-			</TabList>
-		</Tabs>
 
 		<!-- Page Content -->
 		<main class="h-full overflow-auto">

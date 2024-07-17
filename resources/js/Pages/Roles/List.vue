@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { UserPaginator } from '@/types'
+import { RolesPaginator } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { PageState } from 'primevue/paginator'
 import { useConfirm } from 'primevue/useconfirm'
 import { ref } from 'vue'
 
 const props = defineProps<{
-	users: UserPaginator
+	roles: RolesPaginator
 	order: string
 	sort: string
 }>()
@@ -18,10 +18,10 @@ const sortField = ref(props.sort)
 
 const sortOrder = (order: number | undefined) => {
 	router.get(
-		route('users.index', {
+		route('roles.index', {
 			_query: {
-				page: props.users.current_page,
-				rows: props.users.per_page,
+				page: props.roles.current_page,
+				rows: props.roles.per_page,
 				sort: sortField.value,
 				order: order === 1 || order === null ? 'asc' : 'desc',
 			},
@@ -33,7 +33,7 @@ const sortOrder = (order: number | undefined) => {
 
 const changePage = (event: PageState) => {
 	router.get(
-		route('users.index', {
+		route('roles.index', {
 			_query: {
 				page: event.page + 1,
 				rows: event.rows,
@@ -47,10 +47,12 @@ const changePage = (event: PageState) => {
 }
 
 const confirm = useConfirm()
-const deleteUser = (id: string) => {
+const deleteRole = (id: string) => {
+	console.log('delete')
+
 	confirm.require({
-		message: 'Are you sure you want to delete the user?',
-		header: 'Delete User',
+		message: 'Are you sure you want to delete the role?',
+		header: 'Delete Role',
 		rejectProps: {
 			label: 'Cancel',
 			severity: 'secondary',
@@ -61,18 +63,18 @@ const deleteUser = (id: string) => {
 			severity: 'danger',
 		},
 		accept: () => {
-			router.delete(route('users.destroy', id))
+			router.delete(route('roles.destroy', id))
 		},
 	})
 }
 </script>
 
 <template>
-	<Head title="Users" />
-	<AuthenticatedLayout title="Users" dashboard>
+	<Head title="Roles" />
+	<AuthenticatedLayout title="Roles" dashboard>
 		<div ref="container" class="mx-auto h-full">
 			<DataTable
-				:value="users.data"
+				:value="roles.data"
 				striped-rows
 				show-gridlines
 				column-resize-mode="fit"
@@ -84,32 +86,16 @@ const deleteUser = (id: string) => {
 				@update:sort-order="sortOrder"
 				v-if="container && paginator"
 				:scroll-height="container.clientHeight - paginator.clientHeight + 'px'">
-				<Column field="name" header="Name" sortable>
-					<template #body="slotProps">
-						<div class="flex items-center gap-2">
-							<Link
-								:href="route('users.edit', slotProps.data.id)"
-								class="size-8">
-								<Avatar :image="slotProps.data.avatar" shape="circle" />
-							</Link>
-							<span>{{ slotProps.data.name }}</span>
-						</div>
-					</template>
-				</Column>
-				<Column field="department" header="Department" sortable />
-				<Column field="title" header="Title" sortable />
-				<Column field="email" header="Email" sortable />
+				<Column field="name" header="Role" sortable />
 				<Column field="created_at" header="Created at" sortable>
 					<template #body="slotProps">
-						<span>{{
-							new Date(slotProps.data.created_at).toLocaleString()
-						}}</span>
+						{{ new Date(slotProps.data.created_at).toLocaleString() }}
 					</template>
 				</Column>
 				<Column header="Actions">
 					<template #body="slotProps">
 						<div class="flex gap-2">
-							<Link :href="route('users.edit', slotProps.data.id)">
+							<Link :href="route('roles.edit', slotProps.data.id)">
 								<Button icon="pi pi-pencil" text rounded severity="secondary" />
 							</Link>
 							<Button
@@ -117,7 +103,7 @@ const deleteUser = (id: string) => {
 								text
 								rounded
 								severity="danger"
-								@click="() => deleteUser(slotProps.data.id)" />
+								@click="() => deleteRole(slotProps.data.id)" />
 						</div>
 					</template>
 				</Column>
@@ -125,16 +111,16 @@ const deleteUser = (id: string) => {
 			</DataTable>
 			<div ref="paginator">
 				<Paginator
-					:total-records="users.total"
-					:rows="users.per_page"
+					:total-records="roles.total"
+					:rows="roles.per_page"
 					:rows-per-page-options="[20, 40, 60]"
-					:first="users.from - 1"
+					:first="roles.from - 1"
 					pt:paginatorContainer:class="border dark:border-surface-800"
 					pt:root:class="!rounded-none"
 					@page="changePage">
 					<template #start></template>
 					<template #end>
-						<Link :href="route('users.create')">
+						<Link :href="route('roles.create')">
 							<Button icon="pi pi-plus" />
 						</Link>
 					</template>

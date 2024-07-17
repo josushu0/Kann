@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue'
 import { User } from '@/types'
-import { Link, router, useForm } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { Link, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
 	user?: User
 	edit?: boolean
 }>()
 
-const created_at = ref(
-	props.user ? new Date(props.user.created_at).toLocaleString() : ''
-)
-const updated_at = ref(
-	props.user ? new Date(props.user.updated_at).toLocaleString() : ''
-)
+const created_at = props.user
+	? new Date(props.user.created_at).toLocaleString()
+	: ''
+const updated_at = props.user
+	? new Date(props.user.updated_at).toLocaleString()
+	: ''
 
 const form = useForm({
 	name: props.user ? props.user.name : '',
@@ -25,7 +24,7 @@ const form = useForm({
 	password: '',
 })
 
-const handleUpdate = () => {
+const handleSubmit = () => {
 	if (props.edit && props.user) {
 		form.put(route('users.update', props.user.id))
 	} else {
@@ -42,7 +41,7 @@ const handleUpdate = () => {
 		</a>
 	</div>
 	<h2 v-if="!user" class="mb-6 text-center text-2xl font-bold">New User</h2>
-	<form @submit.prevent="handleUpdate" class="grid gap-4 sm:grid-cols-2">
+	<form @submit.prevent="handleSubmit" class="grid gap-4 sm:grid-cols-2">
 		<div class="space-y-4">
 			<div class="flex flex-col">
 				<label for="name">Name</label>

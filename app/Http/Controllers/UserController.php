@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $rows = $request->query('rows', 15);
+        $rows = $request->query('rows', 20);
         $sort = $request->query('sort', 'id');
         $order = $request->query('order', 'asc');
         $users = User::orderBy($sort, $order)->paginate($rows);

@@ -9,16 +9,14 @@ use Spatie\Permission\PermissionRegistrar;
 class PermissionSeeder extends Seeder
 {
     public static $permissions = [
-        'users',
         'users.view',
-        'users.edit',
+        'users.create',
         'users.update',
-        'users.destroy',
-        'roles',
+        'users.delete',
         'roles.view',
-        'roles.edit',
+        'roles.create',
         'roles.update',
-        'roles.destroy',
+        'roles.delete',
     ];
 
     /**
