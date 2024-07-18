@@ -69,7 +69,8 @@ const deleteUser = (id: string) => {
 
 <template>
 	<Head title="Users" />
-	<AuthenticatedLayout title="Users" dashboard>
+
+	<AuthenticatedLayout>
 		<div ref="container" class="mx-auto h-full">
 			<DataTable
 				:value="users.data"

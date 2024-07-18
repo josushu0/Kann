@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +17,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
 
-        User::factory(100)->create();
+        if ($this->command->confirm('Seed development data?', false)) {
+            $this->call([
+                DevelopmentSeeder::class,
+            ]);
+        }
     }
 }

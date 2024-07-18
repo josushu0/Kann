@@ -12,8 +12,9 @@ defineProps<{
 </script>
 
 <template>
-	<AuthenticatedLayout title="Edit User">
-		<Head title="Edit User" />
+	<Head title="Edit User" />
+
+	<AuthenticatedLayout>
 		<div class="flex h-full items-center justify-center py-6">
 			<Card class="w-full max-w-5xl">
 				<template #content>

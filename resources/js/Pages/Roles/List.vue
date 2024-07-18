@@ -71,7 +71,8 @@ const deleteRole = (id: string) => {
 
 <template>
 	<Head title="Roles" />
-	<AuthenticatedLayout title="Roles" dashboard>
+
+	<AuthenticatedLayout>
 		<div ref="container" class="mx-auto h-full">
 			<DataTable
 				:value="roles.data"

@@ -17,6 +17,8 @@ declare module 'vue' {
     DatePicker: typeof import('primevue/datepicker')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Drawer: typeof import('primevue/drawer')['default']
+    IconField: typeof import('primevue/iconfield')['default']
+    InputIcon: typeof import('primevue/inputicon')['default']
     InputMask: typeof import('primevue/inputmask')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
@@ -26,5 +28,6 @@ declare module 'vue' {
     Tab: typeof import('primevue/tab')['default']
     TabList: typeof import('primevue/tablist')['default']
     Tabs: typeof import('primevue/tabs')['default']
+    Textarea: typeof import('primevue/textarea')['default']
   }
 }

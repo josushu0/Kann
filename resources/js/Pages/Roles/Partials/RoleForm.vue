@@ -2,7 +2,6 @@
 import InputError from '@/Components/InputError.vue'
 import { Role } from '@/types'
 import { Link, useForm } from '@inertiajs/vue3'
-import { ref } from 'vue'
 
 const props = defineProps<{
 	role?: Role
