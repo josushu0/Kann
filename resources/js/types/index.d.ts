@@ -25,6 +25,12 @@ export interface Project {
 	due_date: Date
 }
 
+export interface List {
+	id: number
+	name: string
+	position: number
+}
+
 export type PageProps<
 	T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -50,8 +51,12 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
+        $project = Project::select(['id', 'name'])->find($id);
+        $lists = TaskList::where('project_id', $id)->orderBy('position')->get();
+
         return Inertia::render('Projects/Show', [
-            'project' => Project::find($id),
+            'project' => $project,
+            'lists' => $lists,
         ]);
     }
 

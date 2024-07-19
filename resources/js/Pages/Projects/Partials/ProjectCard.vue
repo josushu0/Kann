@@ -50,14 +50,16 @@ const confirm = useConfirm()
 
 <template>
 	<Card
-		class="group relative h-full select-none"
+		class="relative h-full select-none"
 		pt:body:class="flex flex-col h-full"
 		pt:content:class="grow">
 		<template #title>
-			<Link :href="route('projects.show', project.id)">
-				<h1 class="text-wrap pe-8">{{ project.name }}</h1>
+			<Link class="group" :href="route('projects.show', project.id)">
+				<h1 class="text-wrap pe-8 group-hover:text-primary">
+					{{ project.name }}
+				</h1>
 				<i
-					class="pi pi-chevron-right absolute right-6 top-7 -translate-x-3 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"></i>
+					class="pi pi-chevron-right absolute right-6 top-7 -translate-x-3 opacity-0 transition-all group-hover:translate-x-0 group-hover:text-primary group-hover:opacity-100"></i>
 			</Link>
 		</template>
 		<template #content>
@@ -66,7 +68,7 @@ const confirm = useConfirm()
 		<template #footer>
 			<div class="flex items-center justify-between">
 				<Button
-					icon="pi pi-ellipsis-v"
+					icon="pi pi-ellipsis-h"
 					aria-haspopup="true"
 					aria-controls="project_menu"
 					text

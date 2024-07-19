@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::resource('roles', RoleController::class)->except('show');
     Route::resource('projects', ProjectController::class);
+    Route::resource('lists', TaskListController::class)->only('store', 'update', 'destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
