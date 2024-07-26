@@ -78,10 +78,6 @@ const submit = () => {
 			</div>
 
 			<div class="flex items-center justify-end">
-				<Button v-if="canResetPassword" variant="link" as-child>
-					<Link :href="route('register')">Don't have an account?</Link>
-				</Button>
-
 				<Button type="submit" :disabled="form.processing">Login</Button>
 			</div>
 		</form>
