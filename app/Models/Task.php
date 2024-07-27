@@ -23,7 +23,7 @@ class Task extends Model
         static::creating(function ($task) {
             $task->position = self::query()
                 ->where('column_id', $task->column_id)
-                ->orderBy('position')
+                ->orderByDesc('position')
                 ->first()?->position + self::POSITION_GAP;
         });
 

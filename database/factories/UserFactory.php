@@ -31,12 +31,14 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'avatar' => sprintf('https://www.gravatar.com/avatar/%s?s=200&d=retro', hash('sha256', $email)),
+            'department' => fake()->company(),
+            'phone' => fake()->phoneNumber(),
+            'location' => fake()->country(),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
-            'profile_photo_path' => 'https://www.gravatar.com/avatar/'.hash('sha256', $email).'?s=200&d=retro',
             'current_team_id' => null,
         ];
     }
@@ -62,7 +64,6 @@ class UserFactory extends Factory
 
         return $this->has(
             Team::factory()
-                ->withProjects()
                 ->state(fn (array $attributes, User $user) => [
                     'name' => $user->name.'\'s Team',
                     'user_id' => $user->id,

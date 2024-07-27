@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Column;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,21 +22,5 @@ class ProjectFactory extends Factory
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
         ];
-    }
-
-    public function withDefaultColumns(?callable $callback = null): static
-    {
-        return $this->has(
-            Column::factory()
-                ->count(3)
-                ->sequence(
-                    ['name' => 'To do', 'position' => 60000],
-                    ['name' => 'Doing', 'position' => 120000],
-                    ['name' => 'Done', 'position' => 200000],
-                )
-                ->withTasks()
-                ->when(is_callable($callback), $callback),
-            'columns',
-        );
     }
 }
