@@ -39,7 +39,7 @@ defineProps({
 					<div class="flex items-center justify-between gap-2">
 						<TeamSelector v-if="!$page.url.startsWith('/projects')" />
 						<ThemeSelector />
-						<UserMenu :src="$page.props.auth.user.profile_photo_path" />
+						<UserMenu :src="$page.props.auth.user.avatar" />
 					</div>
 				</nav>
 				<div

@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'department' => fake()->company(),
             'phone' => fake()->phoneNumber(),
             'location' => fake()->country(),
+            'is_admin' => false,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
@@ -44,12 +45,12 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indicate that the user is an admin.
      */
-    public function unverified(): static
+    public function isAdmin(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'is_admin' => true,
         ]);
     }
 

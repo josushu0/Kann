@@ -15,6 +15,7 @@ class ProductionSeeder extends Seeder
     {
         User::factory()
             ->withPersonalTeam()
+            ->isAdmin()
             ->create([
                 'name' => config('auth.admin.name'),
                 'email' => config('auth.admin.email'),

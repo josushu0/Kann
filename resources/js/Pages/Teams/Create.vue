@@ -38,9 +38,7 @@ const createTeam = () => {
 							<Label>Team Owner</Label>
 							<div class="flex items-center gap-2">
 								<Avatar>
-									<AvatarImage
-										:src="$page.props.auth.user.profile_photo_path"
-										alt="" />
+									<AvatarImage :src="$page.props.auth.user.avatar" alt="" />
 								</Avatar>
 								<div>
 									<p>{{ $page.props.auth.user.name }}</p>

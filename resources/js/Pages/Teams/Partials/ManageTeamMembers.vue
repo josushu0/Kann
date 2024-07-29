@@ -84,7 +84,7 @@ const displayableRole = (role) => {
 						<!-- User -->
 						<div class="flex items-center gap-2">
 							<Avatar>
-								<AvatarImage :src="user.profile_photo_path" />
+								<AvatarImage :src="user.avatar" />
 							</Avatar>
 							{{ user.name }}
 						</div>

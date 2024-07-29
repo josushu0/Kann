@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if ($this->command->confirm('Seed development data?', false)) {
+        if ($this->command->confirm('Seed demo data?', false)) {
             $this->call([
                 UserSeeder::class,
                 ProjectSeeder::class,

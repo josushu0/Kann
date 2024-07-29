@@ -50,7 +50,7 @@ const sendEmailVerification = () => {
 			<CardContent class="mt-6 space-y-4">
 				<div class="flex flex-col items-center gap-6 sm:flex-row">
 					<Avatar class="size-40">
-						<AvatarImage :src="user.profile_photo_path" alt="Profile Image" />
+						<AvatarImage :src="user.avatar" alt="Profile Image" />
 					</Avatar>
 					<Button class="flex items-center gap-2">
 						<Icon icon="tabler:brand-gravatar" class="size-4" />

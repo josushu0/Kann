@@ -38,7 +38,7 @@ const updateTeamName = () => {
 					<Label>Team Owner</Label>
 					<div class="flex items-center gap-2">
 						<Avatar>
-							<AvatarImage :src="team.owner.profile_photo_path" alt="" />
+							<AvatarImage :src="team.owner.avatar" alt="" />
 						</Avatar>
 						<div>
 							<p>{{ team.owner.name }}</p>

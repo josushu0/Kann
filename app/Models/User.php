@@ -30,6 +30,7 @@ class User extends Authenticatable
         'department',
         'phone',
         'location',
+        'is_admin',
     ];
 
     /**

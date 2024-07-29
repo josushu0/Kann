@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('phone')->nullable();
             $table->string('location')->nullable();
+            $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->foreignUlid('current_team_id')->nullable();
             $table->timestamps();

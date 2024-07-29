@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
         User::factory(3)
             ->withPersonalTeam()
             ->sequence(
-                ['name' => 'Admin', 'email' => 'admin@email.com'],
+                ['name' => 'Admin', 'email' => 'admin@email.com', 'is_admin' => true],
                 ['name' => 'Editor', 'email' => 'editor@email.com'],
                 ['name' => 'Reader', 'email' => 'reader@email.com']
             )
