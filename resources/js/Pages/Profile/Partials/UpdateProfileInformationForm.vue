@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-import { router, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import { Label } from '@/Components/shadcn/ui/label/index.js'
 import { Input } from '@/Components/shadcn/ui/input/index.js'
 import { Card, CardContent } from '@/Components/shadcn/ui/card/index.js'
@@ -17,9 +16,10 @@ const form = useForm({
 	_method: 'PUT',
 	name: props.user.name,
 	email: props.user.email,
+	department: props.user.department,
+	phone: props.user.phone,
+	location: props.user.location,
 })
-
-const verificationLinkSent = ref(false)
 
 const updateProfileInformation = () => {
 	form.post(route('user-profile-information.update'), {
@@ -27,11 +27,6 @@ const updateProfileInformation = () => {
 		preserveScroll: true,
 		onSuccess: () => clearPhotoFileInput(),
 	})
-}
-
-const sendEmailVerification = () => {
-	router.post(route('verification.send'))
-	verificationLinkSent.value = true
 }
 </script>
 
@@ -67,26 +62,28 @@ const sendEmailVerification = () => {
 					<Input type="email" id="email" name="email" v-model="form.email" />
 					<InputError :message="form.errors.email" class="mt-2" />
 				</div>
-				<div
-					v-if="
-						$page.props.jetstream.hasEmailVerification &&
-						user.email_verified_at === null
-					">
-					<p
-						class="mt-2 flex flex-col items-start text-sm lg:flex-row lg:items-center">
-						Your email address is unverified.
-
-						<Button
-							variant="link"
-							@click.prevent="sendEmailVerification"
-							class="text-wrap px-0 text-start underline lg:px-4">
-							Click here to re-send the verification email.
-						</Button>
-					</p>
-
-					<p v-show="verificationLinkSent" class="mt-2 text-sm font-medium">
-						A new verification link has been sent to your email address.
-					</p>
+				<div>
+					<Label for="department">Department</Label>
+					<Input
+						type="text"
+						id="department"
+						name="department"
+						v-model="form.department" />
+					<InputError :message="form.errors.department" class="mt-2" />
+				</div>
+				<div>
+					<Label for="phone">Phone</Label>
+					<Input type="text" id="phone" name="phone" v-model="form.phone" />
+					<InputError :message="form.errors.phone" class="mt-2" />
+				</div>
+				<div>
+					<Label for="location">Location</Label>
+					<Input
+						type="text"
+						id="location"
+						name="location"
+						v-model="form.location" />
+					<InputError :message="form.errors.location" class="mt-2" />
 				</div>
 
 				<div class="flex items-center justify-end gap-2">
