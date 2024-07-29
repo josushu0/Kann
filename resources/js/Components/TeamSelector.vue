@@ -34,11 +34,6 @@ const switchToTeam = (team) => {
 		</DropdownMenuTrigger>
 		<DropdownMenuContent class="w-48">
 			<DropdownMenuLabel>Manage Team</DropdownMenuLabel>
-			<DropdownMenuItem as-child>
-				<Link :href="route('teams.show', $page.props.auth.user.current_team)">
-					Team Settings
-				</Link>
-			</DropdownMenuItem>
 			<DropdownMenuItem as-child v-if="$page.props.jetstream.canCreateTeams">
 				<Link :href="route('teams.create')"> Create New Team</Link>
 			</DropdownMenuItem>

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import Banner from '@/Components/Banner.vue'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue'
 import TeamSelector from '@/Components/TeamSelector.vue'
@@ -7,12 +7,34 @@ import ThemeSelector from '@/Components/ThemeSelector.vue'
 import UserMenu from '@/Components/UserMenu.vue'
 
 defineProps({
-	title: String,
+	title: {
+		type: String,
+		required: false,
+	},
 	project: {
 		type: String,
 		default: '',
 	},
 })
+
+const page = usePage()
+const dashboard =
+	page.component.startsWith('Users') ||
+	page.component === 'Projects/List' ||
+	page.component === 'Teams/Show'
+const dashboardLinks = [
+	{
+		label: 'Projects',
+		route: route('projects.index'),
+		component: 'Projects/List',
+	},
+	{
+		label: 'Settings',
+		route: route('teams.show', page.props.auth.user.current_team),
+		component: 'Teams/Show',
+	},
+	// { label: 'Users', route: route('users.index') },
+]
 </script>
 
 <template>
@@ -26,7 +48,7 @@ defineProps({
 			<header>
 				<nav
 					class="flex items-center justify-between bg-background px-6 py-3"
-					:class="{ 'border-b border-border': !project }">
+					:class="{ 'border-b border-border': !project && !dashboard }">
 					<div class="flex items-center justify-between gap-2">
 						<Link
 							:href="route('projects.index')"
@@ -34,10 +56,10 @@ defineProps({
 							<span class="sr-only">Home</span>
 							<ApplicationLogo class="size-9 fill-background stroke-primary" />
 						</Link>
-						<h1 class="font-bold">{{ title }}</h1>
+						<h1 v-if="title" class="font-bold">{{ title }}</h1>
 					</div>
 					<div class="flex items-center justify-between gap-2">
-						<TeamSelector v-if="!$page.url.startsWith('/projects')" />
+						<TeamSelector />
 						<ThemeSelector />
 						<UserMenu :src="$page.props.auth.user.avatar" />
 					</div>
@@ -61,6 +83,19 @@ defineProps({
 								$page.component === 'Projects/Settings',
 						}">
 						Settings
+					</Link>
+				</div>
+				<div
+					v-if="dashboard"
+					class="flex border-b border-border bg-background px-6">
+					<Link
+						v-for="link in dashboardLinks"
+						:href="link.route"
+						class="px-3 pb-2"
+						:class="{
+							'border-b border-primary': $page.component === link.component,
+						}">
+						{{ link.label }}
 					</Link>
 				</div>
 			</header>
