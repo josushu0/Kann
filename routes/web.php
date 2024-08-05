@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/projects');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::redirect('/dashboard', '/projects');
     Route::resource('users', UserController::class)->except('show');
     Route::resource('projects', ProjectController::class);
 
