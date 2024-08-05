@@ -20,5 +20,7 @@ class UserSeeder extends Seeder
                 ['name' => 'Reader', 'email' => 'reader@email.com']
             )
             ->create();
+
+        User::factory(40)->create();
     }
 }

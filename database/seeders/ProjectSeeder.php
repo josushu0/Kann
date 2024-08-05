@@ -16,7 +16,7 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        User::all()->each(function (User $user) {
+        User::all()->take(3)->each(function (User $user) {
             Project::factory(1)
                 ->for($user->personalTeam())
                 ->has(Column::factory()
