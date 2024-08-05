@@ -64,6 +64,8 @@ const dashboardLinks = [
 						<UserMenu :src="$page.props.auth.user.avatar" />
 					</div>
 				</nav>
+
+				<!-- Project Links -->
 				<div
 					v-if="project"
 					class="flex border-b border-border bg-background px-6">
@@ -85,6 +87,8 @@ const dashboardLinks = [
 						Settings
 					</Link>
 				</div>
+
+				<!-- Dashboard Links -->
 				<div
 					v-if="dashboard"
 					class="flex border-b border-border bg-background px-6">
@@ -96,6 +100,15 @@ const dashboardLinks = [
 							'border-b border-primary': $page.component === link.component,
 						}">
 						{{ link.label }}
+					</Link>
+					<Link
+						v-if="$page.props.auth.user.is_admin"
+						:href="route('users.index')"
+						class="px-3 pb-2"
+						:class="{
+							'border-b border-primary': $page.component.startsWith('Users'),
+						}">
+						Users
 					</Link>
 				</div>
 			</header>
