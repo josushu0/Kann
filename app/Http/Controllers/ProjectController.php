@@ -56,7 +56,7 @@ class ProjectController extends Controller
     {
         Gate::authorize('view', $project);
 
-        return Inertia::render('Projects/Kanban', [
+        return Inertia::render('Projects/Show', [
             'project' => $project,
             'data' => $project->columns()->with(['tasks' => function (Builder $query) {
                 $query->orderBy('position');
@@ -75,7 +75,7 @@ class ProjectController extends Controller
     {
         Gate::authorize('view', $project);
 
-        return Inertia::render('Projects/Settings', [
+        return Inertia::render('Projects/Edit', [
             'project' => $project,
             'canUpdateProject' => Gate::allows('update', $project),
         ]);

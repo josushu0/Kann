@@ -6,7 +6,7 @@ import TeamSelector from '@/Components/TeamSelector.vue'
 import ThemeSelector from '@/Components/ThemeSelector.vue'
 import UserMenu from '@/Components/UserMenu.vue'
 
-defineProps({
+const props = defineProps({
 	title: {
 		type: String,
 		required: false,
@@ -33,6 +33,19 @@ const dashboardLinks = [
 		route: route('teams.show', page.props.auth.user.current_team),
 		component: 'Teams/Show',
 	},
+]
+
+const projectLinks = [
+	{
+		label: 'Tasks',
+		route: route('projects.show', props.project),
+		component: 'Projects/Show'
+	},
+	{
+		label: 'Settings',
+		route: route('projects.edit', props.project),
+		component: 'Projects/Edit'
+	}
 ]
 </script>
 
@@ -65,22 +78,16 @@ const dashboardLinks = [
 
 				<!-- Project Links -->
 				<div v-if="project" class="flex border-b border-border bg-background px-6">
-					<Link :href="route('projects.show', project)" class="px-3 pb-2" :class="{
-						'border-b border-primary': $page.component === 'Projects/Kanban',
+					<Link v-for="link in projectLinks" :key="link.route" :href="link.route" class="px-3 pb-2" :class="{
+						'border-b border-primary': $page.component === link.component,
 					}">
-					Tasks
-					</Link>
-					<Link :href="route('projects.edit', project)" class="px-3 pb-2" :class="{
-						'border-b border-primary':
-							$page.component === 'Projects/Settings',
-					}">
-					Settings
+					{{ link.label }}
 					</Link>
 				</div>
 
 				<!-- Dashboard Links -->
 				<div v-if="dashboard" class="flex border-b border-border bg-background px-6">
-					<Link v-for="link in dashboardLinks" :href="link.route" class="px-3 pb-2" :class="{
+					<Link v-for="link in dashboardLinks" :key="link.route" :href="link.route" class="px-3 pb-2" :class="{
 						'border-b border-primary': $page.component === link.component,
 					}">
 					{{ link.label }}
