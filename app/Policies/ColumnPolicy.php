@@ -28,7 +28,7 @@ class ColumnPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasTeamPermission($user->currentTeam, 'create');
+        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->hasTeamPermission($user->currentTeam, 'create');
     }
 
     /**
@@ -36,7 +36,7 @@ class ColumnPolicy
      */
     public function update(User $user, Column $column): bool
     {
-        return $user->hasTeamPermission($column->project->team, 'update');
+        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->hasTeamPermission($column->project->team, 'update');
     }
 
     /**
@@ -44,7 +44,7 @@ class ColumnPolicy
      */
     public function delete(User $user, Column $column): bool
     {
-        return $user->hasTeamPermission($column->project->team, 'delete');
+        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->hasTeamPermission($column->project->team, 'delete');
     }
 
     /**
@@ -52,7 +52,7 @@ class ColumnPolicy
      */
     public function restore(User $user, Column $column): bool
     {
-        return $user->hasTeamPermission($column->project->team, 'delete');
+        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->hasTeamPermission($column->project->team, 'delete');
     }
 
     /**
@@ -60,6 +60,6 @@ class ColumnPolicy
      */
     public function forceDelete(User $user, Column $column): bool
     {
-        return $user->hasTeamPermission($column->project->team, 'delete');
+        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->hasTeamPermission($column->project->team, 'delete');
     }
 }
