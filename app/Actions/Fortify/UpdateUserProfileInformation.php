@@ -22,6 +22,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'department' => ['string', 'max:255'],
             'phone' => ['string', 'max:255'],
             'location' => ['string', 'max:255'],
+            'is_admin' => ['sometimes', 'required', 'boolean'],
         ])->validateWithBag('updateProfileInformation');
 
         $user->forceFill([
@@ -30,6 +31,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'department' => $input['department'],
             'phone' => $input['phone'],
             'location' => $input['location'],
+            'is_admin' => $input['is_admin'],
         ])->save();
     }
 }
