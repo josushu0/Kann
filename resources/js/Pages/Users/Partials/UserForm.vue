@@ -80,7 +80,7 @@ const handleSubmit = () => {
 					<InputError :message="form.errors.is_admin" class="mt-2" />
 				</div>
 				<div class="flex justify-end gap-2">
-					<Button variant="outline" type="button">
+					<Button variant="outline" type="button" as-child>
 						<Link :href="route('users.index')">Cancel</Link>
 					</Button>
 					<Button v-if="!user" type="submit" :disabled="form.processing">Create</Button>

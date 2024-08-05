@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -15,6 +16,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('view', auth()->user());
+
         $sort = $request->query('sortColumn', 'id');
         $order = $request->query('sortOrder', 'asc');
         $rows = $request->query('rowCount', 20);
@@ -34,6 +37,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', auth()->user());
+
         return Inertia::render('Users/Create');
     }
 
@@ -42,6 +47,8 @@ class UserController extends Controller
      */
     public function store(Request $request, CreateNewUser $action)
     {
+        Gate::authorize('create', auth()->user());
+
         $action->create($request->all());
 
         return to_route('users.index');
@@ -52,6 +59,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        Gate::authorize('update', auth()->user());
+
         return Inertia::render('Users/Edit', [
             'user' => $user,
         ]);
@@ -62,6 +71,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user, UpdateUserProfileInformation $action)
     {
+        Gate::authorize('update', auth()->user());
+
         $action->update($user, $request->all());
 
         return to_route('users.index');
@@ -72,6 +83,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Gate::authorize('delete', auth()->user());
+
         $user->delete();
 
         return back();
