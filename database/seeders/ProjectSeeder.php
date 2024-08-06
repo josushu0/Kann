@@ -20,7 +20,7 @@ class ProjectSeeder extends Seeder
             Project::factory(1)
                 ->for($user->personalTeam())
                 ->has(Column::factory()
-                    ->sequence(fn (Sequence $sequence) => ['name' => 'To do', 'position' => ($sequence->index + 1) * 60000])
+                    ->sequence(fn (Sequence $sequence) => ['position' => ($sequence->index + 1) * 60000])
                     ->has(Task::factory()
                         ->sequence(fn (Sequence $sequence) => ['position' => ($sequence->index + 1) * 60000])
                         ->count(3)

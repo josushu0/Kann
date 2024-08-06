@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->date('due_date')->nullable();
+            $table->foreignUlid('assigned')->nullable()->constrained('users')->cascadeOnDelete();
             $table->double('position');
             $table->foreignUlid('column_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

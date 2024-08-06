@@ -23,7 +23,7 @@ import ConfirmActionModal from '@/Components/ConfirmActionModal.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { ref } from 'vue'
 import KanbanTask from '@/Components/KanbanTask.vue'
-import CreateTask from '@/Components/CreateTask.vue'
+import TaskForm from '@/Components/TaskForm.vue'
 
 const props = defineProps({
 	column: Object,
@@ -117,22 +117,14 @@ useDraggable(draggable, tasks, {
 <template>
 	<Card class="flex h-fit max-h-full w-72 flex-col">
 		<CardHeader class="flex h-full flex-row items-start p-4">
-			<div
-				v-if="canUpdateColumn"
-				class="column_drag_handle flex-none cursor-grab p-3">
+			<div v-if="canUpdateColumn" class="column_drag_handle flex-none cursor-grab p-3">
 				<Icon icon="lucide:grip-vertical" />
 			</div>
-			<EditableRoot
-				submit-mode="enter"
-				v-model="form.name"
-				select-on-focus
-				@submit="updateName"
-				:disabled="!canUpdateColumn"
-				class="flex-1 overflow-hidden break-words">
+			<EditableRoot submit-mode="enter" v-model="form.name" select-on-focus @submit="updateName"
+				:disabled="!canUpdateColumn" class="flex-1 overflow-hidden break-words">
 				<EditableArea>
 					<EditablePreview as="h2" class="px-3 py-2 font-semibold" />
-					<EditableInput
-						as="textarea"
+					<EditableInput as="textarea"
 						class="w-full rounded-md border border-input bg-background px-3 py-2 font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50">
 					</EditableInput>
 				</EditableArea>
@@ -145,15 +137,11 @@ useDraggable(draggable, tasks, {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem as-child>
-						<ConfirmActionModal
-							title="Delete column?"
-							description="Are you sure you want to delete this column?"
-							:button="{
-								text: 'Delete',
-								variant: 'destructive',
-								disabled: form.processing,
-							}"
-							@confirm="deleteColumn">
+						<ConfirmActionModal title="Delete column?" description="Are you sure you want to delete this column?" :button="{
+							text: 'Delete',
+							variant: 'destructive',
+							disabled: form.processing,
+						}" @confirm="deleteColumn">
 							<Button variant="ghost" class="gap-2">
 								<Icon icon="lucide:trash" class="text-red-600" />
 								Delete column
@@ -165,26 +153,15 @@ useDraggable(draggable, tasks, {
 		</CardHeader>
 		<CardContent class="flex flex-col gap-2 overflow-hidden">
 			<div ref="draggable" class="flex flex-col gap-2 overflow-scroll">
-				<KanbanTask
-					v-for="task in tasks"
-					:key="task.id"
-					:task="task"
-					:column="column.id"
-					:columns="columns"
+				<KanbanTask v-for="task in tasks" :key="task.id" :task="task" :column="column.id" :columns="columns"
 					:teamMembers="teamMembers" />
 			</div>
-			<CreateTask
-				:column="column.id"
-				:columns="columns"
-				:teamMembers="teamMembers">
-				<Button
-					type="button"
-					variant="ghost"
-					class="w-full justify-start gap-2">
+			<TaskForm :column="column.id" :columns="columns" :teamMembers="teamMembers">
+				<Button type="button" variant="ghost" class="w-full justify-start gap-2">
 					<Icon icon="lucide:plus" />
 					Add task
 				</Button>
-			</CreateTask>
+			</TaskForm>
 		</CardContent>
 	</Card>
 </template>

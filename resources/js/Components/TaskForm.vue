@@ -2,6 +2,7 @@
 import { Card } from '@/Components/shadcn/ui/card/index.js'
 import {
 	Sheet,
+	SheetClose,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
@@ -25,21 +26,7 @@ import {
 	PopoverTrigger,
 } from '@/Components/shadcn/ui/popover/index.js'
 import { Icon } from '@iconify/vue'
-import {
-	TagsInput,
-	TagsInputInput,
-	TagsInputItem,
-	TagsInputItemDelete,
-	TagsInputItemText,
-} from '@/Components/shadcn/ui/tags-input/index.js'
-import { ComboboxAnchor, ComboboxInput, ComboboxRoot } from 'radix-vue'
 import { computed, ref } from 'vue'
-import {
-	CommandEmpty,
-	CommandGroup,
-	CommandItem,
-	CommandList,
-} from '@/Components/shadcn/ui/command/index.js'
 import PopoverContent from './shadcn/ui/popover/PopoverContent.vue'
 import Calendar from './shadcn/ui/calendar/Calendar.vue'
 import {
@@ -51,6 +38,7 @@ import {
 	SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
 import ConfirmActionModal from './ConfirmActionModal.vue'
+import { Avatar, AvatarImage } from '@/Components/shadcn/ui/avatar'
 
 const props = defineProps({
 	task: {
@@ -70,17 +58,9 @@ const form = useForm({
 	due_date: props.task
 		? parseDateTime(props.task.due_date)
 		: today(getLocalTimeZone()),
-	assigned: [],
+	assigned: props.task ? props.task.assigned : '',
 	column_id: props.column,
 })
-
-const teamTags = props.teamMembers.map((member) => {
-	return { value: member.id, label: member.name }
-})
-const searchTerm = ref('')
-const filteredMembers = computed(() =>
-	teamTags.filter((member) => !form.assigned.includes(member.label))
-)
 
 const deleteTask = () => {
 	router.delete(route('tasks.destroy', props.task.id), {
@@ -133,23 +113,18 @@ const handleSubmit = () => {
 							)
 						}}
 					</SheetDescription>
+					<SheetDescription v-else class="sr-only">Create a new task</SheetDescription>
 				</SheetHeader>
 				<form @submit.prevent="handleSubmit" class="mt-3 w-full space-y-4">
 					<div>
 						<Label for="column">Column</Label>
-						<Select
-							name="column"
-							v-model="form.column_id"
-							:default-value="column">
+						<Select name="column" v-model="form.column_id" :default-value="column">
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectGroup>
-									<SelectItem
-										v-for="column in columns"
-										:key="column.id"
-										:value="column.id">
+									<SelectItem v-for="column in columns" :key="column.id" :value="column.id">
 										{{ column.name }}
 									</SelectItem>
 								</SelectGroup>
@@ -158,21 +133,12 @@ const handleSubmit = () => {
 					</div>
 					<div>
 						<Label for="name">Name</Label>
-						<Input
-							type="text"
-							id="name"
-							name="name"
-							placeholder="Name"
-							v-model="form.name" />
+						<Input type="text" id="name" name="name" placeholder="Name" v-model="form.name" />
 						<InputError :message="form.errors.name" class="mt-2" />
 					</div>
 					<div>
 						<Label for="description">Description</Label>
-						<Textarea
-							id="description"
-							name="description"
-							placeholder="Description"
-							v-model="form.description" />
+						<Textarea id="description" name="description" placeholder="Description" v-model="form.description" />
 						<InputError :message="form.errors.description" class="mt-2" />
 					</div>
 					<div>
@@ -194,66 +160,38 @@ const handleSubmit = () => {
 						</Popover>
 					</div>
 					<div>
-						<Label for="assigned">Assigned</Label>
-						<ComboboxRoot
-							v-model="form.assigned"
-							v-model:searchTerm="searchTerm"
-							class="w-full">
-							<ComboboxAnchor>
-								<TagsInput :model-value="form.assigned">
-									<TagsInputItem
-										v-for="member in form.assigned"
-										:key="member"
-										:value="member">
-										<TagsInputItemText />
-										<TagsInputItemDelete />
-									</TagsInputItem>
-									<ComboboxInput as-child>
-										<TagsInputInput
-											class="w-full px-3"
-											placeholder="Assignees..."
-											@keydown.enter.prevent />
-									</ComboboxInput>
-								</TagsInput>
-							</ComboboxAnchor>
-
-							<CommandList
-								position="popper"
-								:dismissable="true"
-								class="z-50 mt-2 w-[--radix-popper-anchor-width] rounded-md border bg-popover text-popover-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
-								<CommandEmpty />
-								<CommandGroup>
-									<CommandItem
-										v-for="member in filteredMembers"
-										:key="member.value"
-										:value="member.label"
-										@select.prevent="
-											(ev) => {
-												searchTerm = ''
-												form.assigned.push(ev.detail.value)
-											}
-										">
-										{{ member.label }}
-									</CommandItem>
-								</CommandGroup>
-							</CommandList>
-						</ComboboxRoot>
+						<Label for="assigned">Assignee</Label>
+						<Select id="assigned" name="assigned" v-model="form.assigned">
+							<SelectTrigger class="w-full">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectItem v-for="member in teamMembers" :key="member.id" :value="member.id">
+										<div class="flex items-center gap-3">
+											<Avatar class="size-6">
+												<AvatarImage :src="member.avatar" />
+											</Avatar>
+											{{ member.name }}
+										</div>
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 					</div>
 					<div class="flex justify-between gap-2">
-						<ConfirmActionModal
-							v-if="task"
-							title="Delete Task?"
-							description="Are you sure you want to delete this column?"
-							:button="{
+						<ConfirmActionModal v-if="task" title="Delete Task?"
+							description="Are you sure you want to delete this column?" :button="{
 								text: 'Delete',
 								variant: 'destructive',
 								disabled: false,
-							}"
-							@confirm="deleteTask">
+							}" @confirm="deleteTask">
 							<Button variant="destructive" type="button"> Delete </Button>
 						</ConfirmActionModal>
 						<div class="flex w-full justify-end gap-2">
-							<Button variant="outline" type="button">Cancel</Button>
+							<SheetClose as-child>
+								<Button variant="outline" type="button">Cancel</Button>
+							</SheetClose>
 							<Button type="submit">Save</Button>
 						</div>
 					</div>

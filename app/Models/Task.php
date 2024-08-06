@@ -12,7 +12,7 @@ class Task extends Model
 {
     use HasFactory, HasUlids;
 
-    protected $fillable = ['name', 'description', 'due_date', 'column_id'];
+    protected $fillable = ['name', 'description', 'due_date', 'column_id', 'assigned'];
 
     const float POSITION_GAP = 60000;
 

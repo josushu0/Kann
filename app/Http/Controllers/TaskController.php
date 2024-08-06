@@ -18,6 +18,7 @@ class TaskController extends Controller
             'description' => 'nullable|max:255',
             'due_date' => 'nullable|date',
             'column_id' => 'required|exists:columns,id',
+            'assigned' => 'nullable|exists:users,id',
         ]);
 
         Task::create($validated);
@@ -35,6 +36,7 @@ class TaskController extends Controller
             'description' => 'nullable|max:255',
             'due_date' => 'nullable|date',
             'column_id' => 'required|exists:columns,id',
+            'assigned' => 'nullable|exists:users,id',
         ]);
 
         $task->update($validated);
