@@ -18,7 +18,7 @@ import {
 import { Label } from '@/Components/shadcn/ui/label/index.js'
 import { Input } from '@/Components/shadcn/ui/input/index.js'
 import InputError from '@/Components/InputError.vue'
-import { router, useForm } from '@inertiajs/vue3'
+import { router, useForm, usePage } from '@inertiajs/vue3'
 import { Textarea } from '@/Components/shadcn/ui/textarea/index.js'
 import { Button } from '@/Components/shadcn/ui/button/index.js'
 import {
@@ -50,6 +50,9 @@ const props = defineProps({
 	isAdmin: Boolean,
 	teamMembers: Array,
 })
+
+const page = usePage()
+const canUpdateTask = props.task ? props.task.assigned === page.props.auth.user.id || props.isAdmin : true
 
 const dateFormatter = new DateFormatter('en-US', { dateStyle: 'medium' })
 
@@ -119,7 +122,7 @@ const handleSubmit = () => {
 				<form @submit.prevent="handleSubmit" class="mt-3 w-full space-y-4">
 					<div>
 						<Label for="column">Column</Label>
-						<Select name="column" v-model="form.column_id" :default-value="column">
+						<Select name="column" v-model="form.column_id" :default-value="column" :disabled="!canUpdateTask">
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -134,19 +137,20 @@ const handleSubmit = () => {
 					</div>
 					<div>
 						<Label for="name">Name</Label>
-						<Input type="text" id="name" name="name" placeholder="Name" v-model="form.name" />
+						<Input type="text" id="name" name="name" placeholder="Name" v-model="form.name" :disabled="!canUpdateTask" />
 						<InputError :message="form.errors.name" class="mt-2" />
 					</div>
 					<div>
 						<Label for="description">Description</Label>
-						<Textarea id="description" name="description" placeholder="Description" v-model="form.description" />
+						<Textarea id="description" name="description" placeholder="Description" v-model="form.description"
+							:disabled="!canUpdateTask" />
 						<InputError :message="form.errors.description" class="mt-2" />
 					</div>
 					<div>
 						<Label for="due_date">Due Date</Label>
 						<Popover>
 							<PopoverTrigger as-child>
-								<Button variant="outline" class="w-full justify-start gap-3">
+								<Button variant="outline" class="w-full justify-start gap-3" :disabled="!canUpdateTask">
 									<Icon icon="lucide:calendar" class="size-4" />
 									{{
 										dateFormatter.format(
@@ -162,7 +166,7 @@ const handleSubmit = () => {
 					</div>
 					<div>
 						<Label for="assigned">Assignee</Label>
-						<Select id="assigned" name="assigned" v-model="form.assigned">
+						<Select id="assigned" name="assigned" v-model="form.assigned" :disabled="!canUpdateTask">
 							<SelectTrigger class="w-full">
 								<SelectValue />
 							</SelectTrigger>
@@ -193,7 +197,7 @@ const handleSubmit = () => {
 							<SheetClose as-child>
 								<Button variant="outline" type="button">Cancel</Button>
 							</SheetClose>
-							<Button v-if="task.assigned === $page.props.auth.user.id || isAdmin" type="submit">Save</Button>
+							<Button v-if="canUpdateTask" type="submit">Save</Button>
 						</div>
 					</div>
 				</form>
