@@ -82,6 +82,7 @@ class ProjectController extends Controller
         return Inertia::render('Projects/Edit', [
             'project' => $project,
             'canUpdateProject' => Gate::allows('update', $project),
+            'canDeleteProject' => Gate::allows('delete', $project),
         ]);
     }
 

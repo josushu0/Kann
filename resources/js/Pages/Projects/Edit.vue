@@ -31,6 +31,7 @@ import { Separator } from '@/Components/shadcn/ui/separator/index.js'
 const props = defineProps({
 	project: Object,
 	canUpdateProject: Boolean,
+	canDeleteProject: Boolean
 })
 
 const dateFormatter = new DateFormatter('en-US', { dateStyle: 'medium' })
@@ -64,8 +65,7 @@ const deleteProject = () => {
 
 <template>
 	<AppLayout :title="project.name" :project="project.id">
-		<Card
-			class="mx-auto w-full max-w-3xl border-0 shadow-none md:border md:shadow-sm">
+		<Card class="mx-auto w-full max-w-3xl border-0 shadow-none md:border md:shadow-sm">
 			<CardHeader>
 				<CardTitle>Project Settings</CardTitle>
 			</CardHeader>
@@ -73,33 +73,21 @@ const deleteProject = () => {
 				<form @submit.prevent="updateProject" class="w-full space-y-4">
 					<div>
 						<Label for="name">Name</Label>
-						<Input
-							type="text"
-							id="name"
-							name="name"
-							placeholder="Name"
-							:disabled="!canUpdateProject"
+						<Input type="text" id="name" name="name" placeholder="Name" :disabled="!canUpdateProject"
 							v-model="form.name" />
 						<InputError :message="form.errors.name" class="mt-2" />
 					</div>
 					<div>
 						<Label for="description">Description</Label>
-						<Textarea
-							id="description"
-							name="description"
-							placeholder="Describe your project..."
-							:disabled="!canUpdateProject"
-							v-model="form.description" />
+						<Textarea id="description" name="description" placeholder="Describe your project..."
+							:disabled="!canUpdateProject" v-model="form.description" />
 						<InputError :message="form.errors.description" class="mt-2" />
 					</div>
 					<div>
 						<Label for="time">Time Range</Label>
 						<Popover>
 							<PopoverTrigger as-child>
-								<Button
-									variant="outline"
-									:disabled="!canUpdateProject"
-									class="w-full justify-start gap-3">
+								<Button variant="outline" :disabled="!canUpdateProject" class="w-full justify-start gap-3">
 									<Icon icon="lucide:calendar" class="size-4" />
 									<template v-if="date.start">
 										<template v-if="date.end">
@@ -129,9 +117,7 @@ const deleteProject = () => {
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent>
-								<RangeCalendar
-									v-model="date"
-									@update:start-value="(start) => (date.start = start)" />
+								<RangeCalendar v-model="date" @update:start-value="(start) => (date.start = start)" />
 							</PopoverContent>
 						</Popover>
 						<InputError :message="form.errors.start_date" class="mt-2" />
@@ -140,39 +126,35 @@ const deleteProject = () => {
 						<Button variant="outline" type="submit">
 							<Link :href="route('projects.show', project.id)">Cancel</Link>
 						</Button>
-						<Button
-							v-if="canUpdateProject"
-							type="submit"
-							:disabled="form.processing || !canUpdateProject">
+						<Button v-if="canUpdateProject" type="submit" :disabled="form.processing || !canUpdateProject">
 							Update
 						</Button>
 					</div>
 				</form>
 			</CardContent>
 
-			<Separator />
+			<template v-if="canDeleteProject">
+				<Separator />
 
-			<!-- Danger zone -->
-			<CardHeader>
-				<CardTitle>Danger Zone</CardTitle>
-			</CardHeader>
-			<CardContent class="flex flex-col justify-between gap-4 sm:flex-row">
-				<div>
-					<h4 class="font-semibold">Delete this project</h4>
-					<p>
-						Once you delete a repository, there is no going back. Please be
-						certain.
-					</p>
-				</div>
-				<ConfirmsPassword
-					title="Delete this project"
-					:content="`This will permanently delete the ${project.name} project and tasks. This action is not reversible, please be certain.`"
-					button="Delete project"
-					always-ask
-					@confirmed="deleteProject">
-					<Button variant="destructive">Delete project</Button>
-				</ConfirmsPassword>
-			</CardContent>
+				<!-- Danger zone -->
+				<CardHeader>
+					<CardTitle>Danger Zone</CardTitle>
+				</CardHeader>
+				<CardContent class="flex flex-col justify-between gap-4 sm:flex-row">
+					<div>
+						<h4 class="font-semibold">Delete this project</h4>
+						<p>
+							Once you delete a repository, there is no going back. Please be
+							certain.
+						</p>
+					</div>
+					<ConfirmsPassword title="Delete this project"
+						:content="`This will permanently delete the ${project.name} project and tasks. This action is not reversible, please be certain.`"
+						button="Delete project" always-ask @confirmed="deleteProject">
+						<Button variant="destructive">Delete project</Button>
+					</ConfirmsPassword>
+				</CardContent>
+			</template>
 		</Card>
 	</AppLayout>
 </template>
