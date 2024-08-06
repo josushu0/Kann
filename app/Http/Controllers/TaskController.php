@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -13,6 +14,8 @@ class TaskController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('create', Task::class);
+
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'nullable|max:255',
@@ -31,6 +34,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task): RedirectResponse
     {
+        Gate::authorize('update', $task);
+
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'nullable|max:255',
@@ -49,6 +54,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task): RedirectResponse
     {
+        Gate::authorize('delete', $task);
+
         $task->delete();
 
         return redirect()->back();
@@ -56,6 +63,8 @@ class TaskController extends Controller
 
     public function move(Request $request, Task $task): RedirectResponse
     {
+        Gate::authorize('update', $task);
+
         $validated = $request->validate([
             'position' => 'required|numeric',
             'column_id' => 'sometimes|required|exists:columns,id',

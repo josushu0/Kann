@@ -76,7 +76,7 @@ const handleSubmit = () => {
 				...data,
 				due_date: data.due_date.toString(),
 			}))
-			.put(route('tasks.update', props.task.id), {
+			.put(route('tasks.update', props.task), {
 				preserveState: false,
 				preserveScroll: true,
 			})
