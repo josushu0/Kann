@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Column;
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -65,6 +66,9 @@ class ProjectController extends Controller
             'canUpdateColumn' => Gate::allows('update', $project),
             'canDeleteColumn' => Gate::allows('delete', $project),
             'canCreateColumn' => Gate::allows('create', Column::class),
+            'canCreateTask' => Gate::allows('create', Task::class),
+            'canDeleteTask' => Gate::allows('delete'),
+            'isAdmin' => auth()->user()->hasTeamRole(auth()->user()->currentTeam, 'admin'),
         ]);
     }
 

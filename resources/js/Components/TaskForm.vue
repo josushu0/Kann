@@ -47,6 +47,7 @@ const props = defineProps({
 	},
 	column: String,
 	columns: Array,
+	isAdmin: Boolean,
 	teamMembers: Array,
 })
 
@@ -180,7 +181,7 @@ const handleSubmit = () => {
 						</Select>
 					</div>
 					<div class="flex justify-between gap-2">
-						<ConfirmActionModal v-if="task" title="Delete Task?"
+						<ConfirmActionModal v-if="isAdmin" title="Delete Task?"
 							description="Are you sure you want to delete this column?" :button="{
 								text: 'Delete',
 								variant: 'destructive',
@@ -192,7 +193,7 @@ const handleSubmit = () => {
 							<SheetClose as-child>
 								<Button variant="outline" type="button">Cancel</Button>
 							</SheetClose>
-							<Button type="submit">Save</Button>
+							<Button v-if="task.assigned === $page.props.auth.user.id || isAdmin" type="submit">Save</Button>
 						</div>
 					</div>
 				</form>

@@ -8,18 +8,20 @@ const props = defineProps({
 	task: Object,
 	column: String,
 	columns: Array,
+	isAdmin: Boolean,
 	teamMembers: Array,
 })
 </script>
 
 <template>
-	<TaskForm :task="task" :column="column" :columns="columns" :teamMembers="teamMembers">
-		<Button variant="ghost" class="flex w-full select-none justify-start p-2 h-fit">
-			<div class="task_drag_handle flex-none cursor-grab p-3">
+	<TaskForm :task="task" :column="column" :columns="columns" :teamMembers="teamMembers" :isAdmin="isAdmin">
+		<Button variant="ghost" class="flex w-full select-none justify-start p-3 h-fit">
+			<div v-if="task.assigned === $page.props.auth.user.id || isAdmin"
+				class="task_drag_handle flex-none cursor-grab pe-3">
 				<Icon icon="lucide:grip-vertical" />
 			</div>
-			<div class="flex flex-col gap-2 w-full items-start">
-				<p class="text-wrap text-start break-words max-w-[182px]">{{ task.name }}</p>
+			<div class="flex flex-col gap-2 w-full items-start overflow-hidden">
+				<p class="text-wrap text-start break-words">{{ task.name }}</p>
 				<Avatar v-if="task.assigned" class="size-6">
 					<AvatarImage :src="teamMembers.find(member => task.assigned === member.id).avatar" />
 				</Avatar>

@@ -30,6 +30,9 @@ const props = defineProps({
 	columns: Array,
 	canUpdateColumn: Boolean,
 	canDeleteColumn: Boolean,
+	canCreateTask: Boolean,
+	canDeleteTask: Boolean,
+	isAdmin: Boolean,
 	teamMembers: Array,
 })
 
@@ -154,9 +157,9 @@ useDraggable(draggable, tasks, {
 		<CardContent class="flex flex-col gap-2 overflow-hidden">
 			<div ref="draggable" class="flex flex-col gap-2 overflow-scroll">
 				<KanbanTask v-for="task in tasks" :key="task.id" :task="task" :column="column.id" :columns="columns"
-					:teamMembers="teamMembers" />
+					:teamMembers="teamMembers" :isAdmin="isAdmin" />
 			</div>
-			<TaskForm :column="column.id" :columns="columns" :teamMembers="teamMembers">
+			<TaskForm v-if="canCreateTask" :column="column.id" :columns="columns" :teamMembers="teamMembers">
 				<Button type="button" variant="ghost" class="w-full justify-start gap-2">
 					<Icon icon="lucide:plus" />
 					Add task

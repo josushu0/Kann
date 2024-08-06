@@ -13,6 +13,9 @@ const props = defineProps({
 	canUpdateColumn: Boolean,
 	canDeleteColumn: Boolean,
 	canCreateColumn: Boolean,
+	canCreateTask: Boolean,
+	canDeleteTask: Boolean,
+	isAdmin: Boolean
 })
 
 const draggable = ref(null)
@@ -56,14 +59,9 @@ useDraggable(draggable, columns.value, {
 		<div class="mx-10 flex h-full gap-2 overflow-x-scroll">
 			<!-- Columns -->
 			<div ref="draggable" class="flex h-full gap-2">
-				<KanbanColumn
-					v-for="column in columns"
-					:key="column.id"
-					:column="column"
-					:columns="columns"
-					:teamMembers="teamMembers"
-					:canUpdateColumn="canUpdateColumn"
-					:canDeleteColumn="canDeleteColumn" />
+				<KanbanColumn v-for="column in columns" :key="column.id" :column="column" :columns="columns"
+					:teamMembers="teamMembers" :canUpdateColumn="canUpdateColumn" :canDeleteColumn="canDeleteColumn"
+					:canCreateTask="canCreateTask" :canDeleteTask="canDeleteTask" :isAdmin="isAdmin" />
 			</div>
 
 			<!-- Create new column -->
