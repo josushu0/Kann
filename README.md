@@ -1,66 +1,64 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Kann
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Kann is a self hosted project management tool made for teams and developed with Laravel and Vue.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- User management by an administrator
+- Team management with email invitations
+- Permissions per team
+- Project management with Kanban boards
+- Two factor authentication
+- Session management
+- Light/dark mode toggle
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Screenshots
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+![Projects dashboard](https://private-user-images.githubusercontent.com/61262876/357220198-407ba344-985d-485c-abfd-4e489f02fa89.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjM1MDI0MDgsIm5iZiI6MTcyMzUwMjEwOCwicGF0aCI6Ii82MTI2Mjg3Ni8zNTcyMjAxOTgtNDA3YmEzNDQtOTg1ZC00ODVjLWFiZmQtNGU0ODlmMDJmYTg5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA4MTIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwODEyVDIyMzUwOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJkMWMxZTI5OTVhYjdhYjBjZmY2YWZhNjBkYzg4YTlhYjE3MzRhYjc5ZDhlNTljYThlZWQ1ODNhY2JlZTY4YTMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.Wpsc9xp45uSBZ2bOWehUVW_hJZaCDlfFCRTjeapnXfE)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+![Team Settings](https://private-user-images.githubusercontent.com/61262876/357220206-32140448-fdcb-417f-ad3a-6d991999ce0e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjM1MDI0MDgsIm5iZiI6MTcyMzUwMjEwOCwicGF0aCI6Ii82MTI2Mjg3Ni8zNTcyMjAyMDYtMzIxNDA0NDgtZmRjYi00MTdmLWFkM2EtNmQ5OTE5OTljZTBlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA4MTIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwODEyVDIyMzUwOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYyODNiYTM5NWE3YzU1NTg4NWQ0MWFiY2NlODhlNjhiYWJhNWI0ZDhlNzM3MmI5ZmI4MzQwNjVlNGMxMGZjZDMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.V-lvsldO07UwIv2aF4YdVKU_1B5nQsU19eCB1IjBt4A)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![Users table](https://private-user-images.githubusercontent.com/61262876/357220216-3797d0cb-8202-4478-a9b7-bd822ed2e9db.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjM1MDI0MDgsIm5iZiI6MTcyMzUwMjEwOCwicGF0aCI6Ii82MTI2Mjg3Ni8zNTcyMjAyMTYtMzc5N2QwY2ItODIwMi00NDc4LWE5YjctYmQ4MjJlZDJlOWRiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA4MTIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwODEyVDIyMzUwOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRlNjExYWIzYTQxZGZjOGU4YTFlODVkNTdhYTNkNmZlNTVjYWU2YThjM2YzNGQzNjk3NjExOTUwZTMyZTQ4YTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.xrLxJYbvJUcWf6TAEVfQzHlb-XcoSYB3V91P2bjaH84)
 
-## Laravel Sponsors
+![Project Kanban view](https://private-user-images.githubusercontent.com/61262876/357220234-52db3ba6-630b-452f-8d8a-bb57866f293f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjM1MDI0MDgsIm5iZiI6MTcyMzUwMjEwOCwicGF0aCI6Ii82MTI2Mjg3Ni8zNTcyMjAyMzQtNTJkYjNiYTYtNjMwYi00NTJmLThkOGEtYmI1Nzg2NmYyOTNmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA4MTIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwODEyVDIyMzUwOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBkODRjNzMwMGQxYzQzMWVjMmRmNGRiNDA0ODE4YThmODdiMzI5NTYwNGIwNGM1Y2U3Y2Y4YjI3OWJlMTUyOTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.aoSHEkswarfnih3BAtKHV_883Iu2K7rvh5q8Z7Mkzdo)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+## Demo
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+To try Kann you can use the [demo](https://kann.josuemartell.dev) site. Have in mind that all data is deleted everyday.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Deployment
 
-## Code of Conduct
+To deploy this project:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Clone the repository and cd into it
+2. Install npm dependencies with `npm install`
+3. Copy .env file from .env.example
+4. Update admin credentials in .env file (see defalts in .env.example file)
+5. Update email variables in .env file
+6. Update db variables in .env file if necessary
+7. Create database
+8. Generate encryption key with `php artisan key:generate`
+9. Migrate database with `php artisan migrate --seed`
+10. If you want demo data enter `yes` otherwise select `no` if you only want to setup admin user
+11. Install composer dependencies with `composer install --no-dev`
+12. Run `php artisan optimize` to optimize Laravel for production
+13. Run `php artisan storage:link` to create symbolic link for storage in public directory
+14. Build frontend with `npm run build`
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Roadmap
+
+- [ ] Update emails
+- [ ] Add comments system to tasks
+- [ ] Change styles in projects and tasks depending on how close to deadline
+- [ ] Archiving system for users, projects and tasks
+- [ ] Subscribing system to tasks
+
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[MIT](https://choosealicense.com/licenses/mit/)
